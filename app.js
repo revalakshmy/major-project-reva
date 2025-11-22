@@ -1,3 +1,6 @@
+//for ai button
+require("dotenv").config();
+
 if(process.env.NODE_ENV !="production"){
     require('dotenv').config();
 }
@@ -8,6 +11,10 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+
 const ejsMate = require("ejs-mate");
 const cookieParser=require("cookie-parser");
 const session=require("express-session");
@@ -16,6 +23,14 @@ const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStratergy=require("passport-local");
 const User=require('./models/user.js');
+
+//for AI Generator Button
+
+app.use(express.json());
+
+
+const aiRoutes = require("./routes/ai");
+app.use("/ai", aiRoutes);
 
 app.get("/", (req, res) => {
     res.redirect("/listings"); // Or res.render("some_homepage.ejs");

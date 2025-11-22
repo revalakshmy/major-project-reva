@@ -137,3 +137,76 @@ body{
     font-size: 16px;
     
 }
+
+
+/* AI Generator button */
+.ai-floating-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #8a2be2;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 1000;
+}
+.ai-modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+.ai-modal {
+    width: 480px;
+    padding: 30px;
+    background: #111827;
+    border-radius: 18px;
+    color: white;
+}
+.ai-modal h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.ai-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #374151;
+    background: #1f2937;
+    color: white;
+    margin-bottom: 20px;
+}
+.ai-submit {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #8a2be2, #4f46e5);
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+/* AI-STUFF */
+.ai-output-hidden {
+    display: none !important;
+}
+/* Box inside the modal that holds the generated itinerary */
+.ai-output-box {
+    background: #020617;
+    border-radius: 10px;
+    border: 1px solid #4f46e5;
+    padding: 12px;
+    max-height: 260px;
+    overflow-y: auto;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
