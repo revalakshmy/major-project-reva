@@ -1,40 +1,42 @@
-
-body{
-    font-family:"plus jakarta sans",sans-serif;
+body {
+    font-family: "Plus Jakarta Sans", sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.container{
+.container {
     flex: 1;
 }
 
-/*navbar*/
-.navbar{
+/* NAVBAR */
+.navbar {
     height: 5rem;
     background-color: white;
 }
 
-.fa-compass{
-    color:#fe424d;
+.fa-compass {
+    color: #fe424d;
     font-size: 2rem;
 }
 
-.nav-link{
+.nav-link {
     color: #222222 !important;
 }
 
-/*footer*/
-.f-info-links a{
+/* FOOTER */
+.f-info-links a {
     text-decoration: none;
     color: #222222;
 }
 
-.f-info-links a:hover{
+.f-info-links a:hover {
     text-decoration: underline;
 }
-.f-info-links, .f-info-socials, .f-info-brand{
+
+.f-info-links,
+.f-info-socials,
+.f-info-brand {
     width: 100%;
     vertical-align: middle;
     display: flex;
@@ -42,104 +44,90 @@ body{
     justify-content: center;
 }
 
-
-
-.f-info-socials i{
-    font-size: 1.2 rem;
+.f-info-socials i {
+    font-size: 1.2rem;
     margin-right: 1rem;
 }
 
-.f-info{
+.f-info {
     text-align: center;
     display: flex;
     height: 8rem;
     background-color: #ebebeb;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: space-evenly;
 }
 
-/*cards*/
-.listing-card{
+/* LISTING CARDS */
+.listing-card {
     border: none !important;
     margin-bottom: 2rem;
-
 }
 
-.card-img-top{
+.card-img-top {
     border-radius: 1rem;
     width: 100%;
     object-fit: cover !important;
-
 }
 
-.card-body{
-    padding:0 !important;
+.card-body {
+    padding: 0 !important;
 }
 
-.card-text p{
+.card-text p {
     font-weight: 400;
 }
 
-.listing-link{
+.listing-link {
     text-decoration: none;
     color: #222222;
 }
 
-/*card effect*/
-.card-img-overlay{
+/* CARD HOVER EFFECT */
+.card-img-overlay {
     opacity: 0;
 }
 
-.card-img-overlay:hover{
+.card-img-overlay:hover {
     opacity: 0.2;
     background-color: white;
 }
 
-/*button*/
-.btndiv{
+/* BUTTONS */
+.btndiv {
     display: flex;
     justify-content: center;
 }
 
-#mybutt{
+#mybutt {
     background-color: #fe424d;
     border: none;
 }
 
-/*show page buttons edit and delete*/
-
-
+/* EDIT & DELETE BUTTONS */
 .button-actions {
     display: flex;
-    gap: 25px; /* Creates spacing between children (the <a> and the <form>) */
-    align-items: center; /* Vertically aligns them if their heights differ */
+    gap: 25px;
+    align-items: center;
 }
 
-/* Example of other styling based on your image */
 #edit-button {
-    background-color:#fe424d;
+    background-color: #fe424d;
     color: white;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
-    
-    
 }
 
 #delete-button {
-    background-color:#222222;
+    background-color: #222222;
     color: white;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
-    
 }
 
-
-/* AI Generator button */
+/* AI BUTTON */
 .ai-floating-btn {
     position: fixed;
     bottom: 25px;
@@ -153,6 +141,7 @@ body{
     cursor: pointer;
     z-index: 1000;
 }
+
 .ai-modal-bg {
     display: none;
     position: fixed;
@@ -163,6 +152,7 @@ body{
     align-items: center;
     z-index: 1001;
 }
+
 .ai-modal {
     width: 480px;
     padding: 30px;
@@ -170,10 +160,12 @@ body{
     border-radius: 18px;
     color: white;
 }
+
 .ai-modal h2 {
     font-size: 20px;
     margin-bottom: 20px;
 }
+
 .ai-input {
     width: 100%;
     padding: 12px;
@@ -183,6 +175,7 @@ body{
     color: white;
     margin-bottom: 20px;
 }
+
 .ai-submit {
     width: 100%;
     padding: 14px;
@@ -194,12 +187,10 @@ body{
     cursor: pointer;
 }
 
-
-/* AI-STUFF */
 .ai-output-hidden {
     display: none !important;
 }
-/* Box inside the modal that holds the generated itinerary */
+
 .ai-output-box {
     background: #020617;
     border-radius: 10px;
@@ -207,6 +198,165 @@ body{
     padding: 12px;
     max-height: 260px;
     overflow-y: auto;
-    font-size: 0.95rem;
-    line-height: 1.5;
 }
+
+/* -----------------------------------------------------
+                    DARK MODE (Royal Blue Theme)
+------------------------------------------------------*/
+
+.dark-mode {
+    background-color: #0B1220 !important;    /* Royal Navy Blue */
+    color: #ffffff !important;
+}
+
+/* NAVBAR */
+.dark-mode .navbar {
+    background-color: #0F172A !important;
+}
+
+.dark-mode .navbar a {
+    color: #ffffff !important;
+}
+
+/* SEARCH BAR */
+.dark-mode .form-control {
+    background-color: #1E293B !important;
+    color: white !important;
+    border: 1px solid #334155 !important;
+}
+
+/* SEARCH BUTTON */
+.dark-mode .btn-search {
+    background-color: #fe424d !important;
+    color: #fff !important;
+}
+
+/* CATEGORY BAR */
+.dark-mode .category-box *,
+.dark-mode .category-box {
+    color: #ffffff !important;
+}
+
+/* LISTING CARDS */
+.dark-mode .listing-card {
+    background-color: #111827 !important;
+    border: 1px solid #1e293b !important;
+}
+
+.dark-mode .listing-card h5,
+.dark-mode .listing-card p,
+.dark-mode a.listing-link {
+    color: #ffffff !important;
+}
+
+/* FOOTER */
+.dark-mode .f-info {
+    background-color: #0F172A !important;
+}
+
+.dark-mode .f-info a,
+.dark-mode .f-info p,
+.dark-mode .f-info i {
+    color: #A5B4FC !important;
+}
+
+/* AI BUTTON */
+.dark-mode .ai-floating-btn {
+    background-color: #A855F7 !important;
+}
+
+/* AI MODAL */
+.dark-mode .ai-modal {
+    background-color: #0F172A !important;
+}
+
+.dark-mode .ai-output-box {
+    background: #1E293B !important;
+    border-color: #8B5CF6 !important;
+}
+
+/* LINKS */
+.dark-mode a {
+    color: #A5B4FC !important;
+}
+
+/* ICONS */
+.dark-mode i {
+    color: white !important;
+}
+
+/* HOSTING BUTTON */
+.dark-mode #hosting:hover {
+    background-color: #334155 !important;
+    color: white !important;
+}
+
+.btn btn-search{
+    color: #ffffff !important;          /* Make text white */
+    border-color: #ffffff40 !important; /* Light translucent border */
+    background-color: #0f172a !important; /* Match dark theme */
+}
+
+/* new additions */
+/* Make input text and placeholder visible in dark mode */
+.dark-mode input,
+.dark-mode .form-control {
+    color: #ffffff !important;
+    background-color: #0F1A3A !important;  /* matches your dark blue theme */
+}
+
+/* Placeholder color */
+.dark-mode input::placeholder,
+.dark-mode .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.dark-mode label,
+.dark-mode span,
+.dark-mode .form-check-label {
+    color: #ffffff !important;
+}
+
+
+/* Fix: Make "Display total after taxes" box visible in dark mode */
+.dark-mode .tax-toggle-box {
+    border: 1px solid rgba(255, 255, 255, 0.35) !important; /* Light border */
+    color: #ffffff !important; /* white text */
+}
+
+/* Also fix switch circle background */
+.dark-mode .tax-toggle-box .form-check-input {
+    background-color: #1e293b !important; /* navy circle */
+    border-color: #ffffff !important;
+}
+
+/* Make the tax toggle visible in dark mode */
+.dark-mode .tax-toggle {
+    background-color: #0f172a !important;  /* deep navy */
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    padding: 8px 16px;
+    border-radius: 12px;
+}
+
+/* Label becomes white */
+.dark-mode .tax-toggle .form-check-label {
+    color: #ffffff !important;
+}
+
+/* Switch track */
+.dark-mode .tax-toggle .form-check-input {
+    background-color: #1e293b !important;  /* lighter navy */
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Switch knob when ON */
+.dark-mode .tax-toggle .form-check-input:checked {
+    background-color: #4f46e5 !important; /* purple toggle ON */
+    border-color: #4f46e5 !important;
+}
+
+.dark-mode .tax-toggle {
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
+}
+
+
