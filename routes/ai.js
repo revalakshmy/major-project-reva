@@ -3,7 +3,11 @@ const express = require("express");
 const router = express.Router();
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+console.log("🔍 DEBUG: GEMINI KEY IN ai.js:", process.env.GEMINI_API_KEY);
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+console.log("Gemini Key Loaded?:", process.env.GEMINI_API_KEY ? "YES" : "NO");
+
 
 // ==============================
 // GENERATE ITINERARY

@@ -1,17 +1,14 @@
 const express = require("express");
-const router = express.Router(); // Create an Express router
+const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/Expresserror.js");
-const { listingSchema } = require("../schema.js"); // Only listingSchema is needed here
-const listing = require("../models/listing.js"); // <--- ADDED: Import the Listing model
-const{isLoggedIn, isOwner}=require("../middleware.js");
-const listingController=require("../controller/listings.js");
+const { listingSchema } = require("../schema.js");
+const listing = require("../models/listing.js");
+const { isLoggedIn, isOwner } = require("../middleware.js");
+const listingController = require("../controller/listings.js");
 const multer  = require('multer');
-const{storage}=require("../cloudConfig.js");
-const upload = multer({storage});
-
-
-
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 
 // Joi Validation Middleware for listings
 const validateListing = (req, res, next) => {
@@ -24,34 +21,47 @@ const validateListing = (req, res, next) => {
     }
 };
 
-// Index Route: Show all listings,to save a new listing (CREATE)
+// ===========================================================
+// HOME PAGE (Index) — SHOW AI BUTTON ONLY ON THIS ROUTE
+// ===========================================================
+
 router
-.route("/")
-.get(wrapAsync(listingController.index))
-.post(
-    isLoggedIn,
-    upload.single("listing[image]"),
-    validateListing,
-    wrapAsync(listingController.CreateNewListing)
-);
+    .route("/")
+    .get(wrapAsync(listingController.index))   // index now returns { showAI: true }
+    .post(
+        isLoggedIn,
+        upload.single("listing[image]"),
+        validateListing,
+        wrapAsync(listingController.CreateNewListing)
+    );
 
+// ===========================================================
+// NEW LISTING FORM — AI HIDDEN
+// ===========================================================
+router.get("/new", isLoggedIn, listingController.RenderNewform);
 
-// Route to add new listing (render form)
-router.get("/new",isLoggedIn,listingController.RenderNewform);
+// ===========================================================
+// SHOW, UPDATE, DELETE — AI HIDDEN
+// ===========================================================
 
-
-// Route to find a listing by its id (Show Route),update and delete a listing
 router
-.route("/:id")
-.get(wrapAsync(listingController.ShowListingByid))
-.put(validateListing,isOwner, upload.single("listing[image]"), wrapAsync(listingController.UpdateListing))
-.delete(isLoggedIn,isOwner, wrapAsync(listingController.DeleteListing));
+    .route("/:id")
+    .get(wrapAsync(listingController.ShowListingByid))
+    .put(
+        validateListing,
+        isOwner,
+        upload.single("listing[image]"),
+        wrapAsync(listingController.UpdateListing)
+    )
+    .delete(
+        isLoggedIn,
+        isOwner,
+        wrapAsync(listingController.DeleteListing)
+    );
 
+// ===========================================================
+// EDIT PAGE — AI HIDDEN
+// ===========================================================
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.RenderEditform));
 
-
-// Route to edit a listing (render edit form)
-router.get("/:id/edit",isLoggedIn ,isOwner,wrapAsync(listingController.RenderEditform));
-
-
-
-module.exports = router; // Export the router
+module.exports = router;

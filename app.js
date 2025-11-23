@@ -1,9 +1,9 @@
 //for ai button
 require("dotenv").config();
 
-if(process.env.NODE_ENV !="production"){
-    require('dotenv').config();
-}
+// if(process.env.NODE_ENV !="production"){
+//     require('dotenv').config();
+// }
 console.log(process.env.SECRET);
 
 const express = require('express');
@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 
 const ejsMate = require("ejs-mate");
@@ -138,11 +138,27 @@ app.use("/",userRouter);
 
 
 // Global Error Handling Middleware - MUST be the last middleware
+// app.use((err, req, res, next) => {
+//     let { statusCode = 500, message = "Something went wrong!" } = err;
+//     res.status(statusCode).render("listings/error.ejs", { message });
+//     console.error("Global Error Handler:", err); // Log the full error for debugging
+// });
+
 app.use((err, req, res, next) => {
-    let { statusCode = 500, message = "Something went wrong!" } = err;
+    console.log("============= RAW ERROR START =============");
+    console.log("TYPE:", typeof err);
+    console.log("ERROR OBJECT:", err);
+    console.log("ERROR KEYS:", Object.keys(err || {}));
+    console.log("STACK:", err.stack);
+    console.log("============= RAW ERROR END ===============");
+
+    let { statusCode = 500 } = err;
+    const message = err.message || "Something went wrong!";
     res.status(statusCode).render("listings/error.ejs", { message });
-    console.error("Global Error Handler:", err); // Log the full error for debugging
 });
+
+
+
 
 // --- Start Server ---
 const port = process.env.PORT || 8080; // Use environment variable PORT, or 8080 for local development

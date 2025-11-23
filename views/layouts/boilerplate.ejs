@@ -8,49 +8,50 @@
     <link rel="stylesheet" href="/css/rating.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <%- include("../includes/navbar.ejs") %>
+
     <div class="container">
         <%- include("../includes/flash.ejs") %>
         <%- body %>
-        
-        <!-- AI FLOATING BUTTON -->
+
+        <!-- SHOW AI BUTTON ONLY ON HOME PAGE -->
+        <% if (typeof showAI !== "undefined" && showAI === true) { %>
         <button id="ai-btn" class="ai-floating-btn">
             🤖 AI Itinerary
         </button>
-
+        <% } %>
     </div>
 
-    <!-- AI POPUP MODAL -->
+    <!-- SHOW AI MODAL ONLY ON HOME PAGE -->
+    <% if (typeof showAI !== "undefined" && showAI === true) { %>
     <div id="ai-modal-bg" class="ai-modal-bg">
         <div class="ai-modal">
 
-            <!-- 🔹 FORM SECTION (shown first) -->
+            <!-- FORM SECTION -->
             <div id="ai-form-section">
                 <h2>✨ AI-Powered Itinerary Generator</h2>
 
                 <input type="text" id="ai-location" class="ai-input" placeholder="Enter Destination">
-
                 <input type="number" id="ai-budget" class="ai-input" placeholder="Budget (USD)">
 
                 <label style="font-size:15px;">Travel Dates</label>
                 <input type="date" id="ai-start" class="ai-input">
                 <input type="date" id="ai-end" class="ai-input">
 
-                <textarea id="ai-pref" class="ai-input"
-                    placeholder="Your travel preferences (food, nature, adventure, etc.)"></textarea>
+                <textarea id="ai-pref" class="ai-input" placeholder="Your travel preferences (food, nature, adventure, etc.)"></textarea>
 
                 <button id="ai-generate" class="ai-submit">
                     ⚡ Generate Itinerary
                 </button>
             </div>
 
-            <!-- 🔹 RESULT SECTION (hidden initially, same box) -->
+            <!-- RESULT SECTION -->
             <div id="ai-result-section" class="ai-output-hidden">
                 <h2>🧳 Your AI Itinerary</h2>
 
@@ -73,13 +74,19 @@
 
         </div>
     </div>
-
+    <% } %>
 
     <%- include("../includes/footer.ejs") %>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-    <script src="/js/ai.js"></script>
-<script src="/js/script.js"></script>
+
+    <!-- Always include Bootstrap + script.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/script.js"></script>
+
+    <!-- ONLY LOAD AI SCRIPTS ON HOME PAGE -->
+    <% if (typeof showAI !== "undefined" && showAI === true) { %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+        <script src="/js/ai.js"></script>
+    <% } %>
 
 </body>
 </html>
