@@ -67,17 +67,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ----- DOWNLOAD PDF -----
     aiDownloadBtn.addEventListener("click", () => {
-        const element = document.getElementById("ai-output-text");
+    const element = document.getElementById("ai-output-text");
 
-        const opts = {
-            margin: 10,
-            filename: "itinerary.pdf",
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-        };
+    // 1️⃣ Save current mode
+    const body = document.body;
+    const wasDark = body.classList.contains("dark-mode");
 
-        html2pdf().set(opts).from(element).save();
-    });
+    // 2️⃣ TEMPORARILY disable dark mode for clean PDF
+    if (wasDark) {
+        body.classList.remove("dark-mode");
+    }
+
+    // 3️⃣ Add a clean background & text color for PDF capture
+    element.style.background = "white";
+    element.style.color = "black";
+    element.style.padding = "20px";
+    element.style.borderRadius = "10px";
+
+    const opts = {
+        margin: 10,
+        filename: "itinerary.pdf",
+        html2canvas: { scale: 2, backgroundColor: "#ffffff" },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
+
+    html2pdf()
+        .set(opts)
+        .from(element)
+        .save()
+        .then(() => {
+            // 4️⃣ Restore dark mode if it was enabled
+            if (wasDark) {
+                body.classList.add("dark-mode");
+            }
+
+            // 5️⃣ Restore original style
+            element.style.background = "";
+            element.style.color = "";
+            element.style.padding = "";
+            element.style.borderRadius = "";
+        });
+});
+
 
     // ----- BACK BUTTON -----
     aiBackBtn.addEventListener("click", () => {

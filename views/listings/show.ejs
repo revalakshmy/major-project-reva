@@ -4,89 +4,225 @@
     <div class="container my-4">
         <div class="row justify-content-center">
             <div class="col-7">
-                <!-- Listing Card -->
-                <div class="card listing-card mb-3">
-                    <h3 class="card-title-listing" style="color: #fe242f;"><%= listing.title %></h3>
-                    <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image" style="height:15rem">
+
+                <!-- LISTING CARD -->
+                <div class="card listing-card mb-3 p-3">
+
+                    <!-- Title -->
+                    <h3 class="card-title-listing text-danger fw-bold">
+                        <%= listing.title %>
+                    </h3>
+
+                    <!-- Image -->
+                    <img 
+                        src="<%= listing.image.url %>"
+                        class="card-img-top show-img mb-3"
+                        alt="listing_image"
+                        style="height:15rem; object-fit:cover; border-radius:10px;"
+                    >
+
+                    <!-- Details -->
                     <div class="card-body">
-                        <p class="card-text">
-                            <b>Owned By:</b> <i style="color: #fe242f;"><%= listing.owner.username %></i><br><br>
-                            <%= listing.description %><br>
-                            &#8377; <%= listing.price.toLocaleString("en-IN") %> / night<br>
-                            <%= listing.location %><br>
+                        <p class="card-text fs-6">
+
+                            <b>Owned By:</b>
+                            <i class="text-danger"><%= listing.owner.username %></i>
+                            <br><br>
+
+                            <%= listing.description %> <br>
+                            ₹ <%= listing.price.toLocaleString("en-IN") %> / night <br>
+
+                            <b>Address:</b> 
+                            <%= listing.location %>, 
+                            <%= listing.pincode %>, 
                             <%= listing.country %>
                         </p>
 
+                        <!-- EDIT / DELETE BUTTONS -->
                         <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
                         <div class="button-actions mt-3">
-                            <a href="/listings/<%= listing._id %>/edit" class="btn" id="edit-button">EDIT</a>
-                            <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
+                            
+                            <a 
+                                href="/listings/<%= listing._id %>/edit" 
+                                class="btn" 
+                                id="edit-button"
+                            >
+                                EDIT
+                            </a>
+
+                            <form 
+                                method="POST" 
+                                action="/listings/<%= listing._id %>?_method=DELETE"
+                                class="d-inline"
+                            >
                                 <button class="btn" id="delete-button">DELETE</button>
                             </form>
+
                         </div>
                         <% } %>
+
                     </div>
                 </div>
 
-                <hr class="my-4"/>
+                <!-- ⭐ MAP SECTION ⭐ -->
+                <% if (listing.lat && listing.lng) { %>
 
-                <!-- Leave Review Section -->
+                <h4 class="mb-3">Location on Map</h4>
+
+                <div 
+                    id="map"
+                    style="
+                        height: 350px;
+                        border-radius: 15px;
+                        margin-bottom: 30px;
+                        border: 2px solid #555;
+                    "
+                ></div>
+
+                <!-- Leaflet CSS + JS -->
+                <link 
+                    rel="stylesheet" 
+                    href="https://unpkg.com/leaflet/dist/leaflet.css" 
+                />
+                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const lat = <%= listing.lat %>;
+                        const lng = <%= listing.lng %>;
+
+                        const map = L.map("map").setView([lat, lng], 16);
+
+                        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                            maxZoom: 19,
+                        }).addTo(map);
+
+                        L.marker([lat, lng])
+                            .addTo(map)
+                            .bindPopup(`
+                                <b><%= listing.title %></b><br>
+                                <%= listing.location %>, <%= listing.pincode %>
+                            `)
+                            .openPopup();
+                    });
+                </script>
+
+                <% } else { %>
+
+                <!-- NO LOCATION ALERT -->
+                <div class="alert alert-warning p-3 rounded-3 mt-3">
+                    Location not available.
+                </div>
+
+                <% } %>
+
+                <hr class="my-4" />
+
+                <!-- ⭐ LEAVE REVIEW SECTION ⭐ -->
                 <% if(currUser) { %>
                 <div class="leave-review-section mb-4">
-                   <h3>Leave a Review</h3>
-                    <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
+
+                    <h3>Leave a Review</h3>
+
+                    <form 
+                        action="/listings/<%= listing.id %>/reviews"
+                        method="POST"
+                        novalidate
+                        class="needs-validation"
+                    >
+
                         <!-- Star Rating -->
                         <fieldset class="starability-slot mb-3">
-                            <legend style="font-size: 1rem;">Ratings</legend>
-                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                            <legend class="small">Ratings</legend>
+
+                            <input 
+                                type="radio" 
+                                id="no-rate" 
+                                class="input-no-rate" 
+                                name="review[rating]" 
+                                value="1" 
+                                checked 
+                            />
+
                             <input type="radio" id="rate1" name="review[rating]" value="1" />
-                            <label for="rate1" title="Terrible">1 star</label>
+                            <label for="rate1">1 star</label>
+
                             <input type="radio" id="rate2" name="review[rating]" value="2" />
-                            <label for="rate2" title="Not good">2 stars</label>
+                            <label for="rate2">2 stars</label>
+
                             <input type="radio" id="rate3" name="review[rating]" value="3" />
-                            <label for="rate3" title="Average">3 stars</label>
+                            <label for="rate3">3 stars</label>
+
                             <input type="radio" id="rate4" name="review[rating]" value="4" />
-                            <label for="rate4" title="Very good">4 stars</label>
+                            <label for="rate4">4 stars</label>
+
                             <input type="radio" id="rate5" name="review[rating]" value="5" />
-                            <label for="rate5" title="Amazing">5 stars</label>
+                            <label for="rate5">5 stars</label>
                         </fieldset>
 
-                        <!-- Comment Box -->
+                        <!-- Comment -->
                         <div class="mb-3">
-                            <label for="comment" class="form-label">Comments</label>
-                            <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
-                            <div class="invalid-feedback">Field required</div>
+                            <label class="form-label">Comments</label>
+                            <textarea 
+                                name="review[comment]" 
+                                rows="4" 
+                                class="form-control"
+                                required
+                            ></textarea>
+                            <div class="invalid-feedback">Required</div>
                         </div>
 
-                        <!-- Submit -->
-                        <button class="btn" style="background-color: #fe242f; color: white;">Submit</button>
+                        <button class="btn" style="background-color:#fe242f; color:white;">
+                            Submit
+                        </button>
+
                     </form>
                 </div>
                 <% } %>
 
-                <!-- All Reviews Section -->
+                <!-- ⭐ ALL REVIEWS ⭐ -->
                 <div class="all-reviews-section mb-4">
                     <p><b>All Reviews</b></p>
+
                     <div class="row">
+
                         <% for(let review of listing.reviews) { %>
                         <div class="col-md-6 mb-3">
+
                             <div class="card h-100 review-card">
                                 <div class="card-body">
+
                                     <h5 class="card-title">@<%= review.author.username %></h5>
-                                    <p class="starability-result" data-rating="<%= review.rating %>"></p>
-                                    <p class="card-text ms-2"><%= review.comment %></p>
-                                    
-                                    
+
+                                    <p 
+                                        class="starability-result" 
+                                        data-rating="<%= review.rating %>"
+                                    ></p>
+
+                                    <p class="card-text ms-2">
+                                        <%= review.comment %>
+                                    </p>
 
                                     <% if(currUser && review.author._id.equals(currUser._id)) { %>
-                                    <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                        <button class="btn btn-sm mb-2 ms-2" style="background-color: #222222; color: white;">Delete</button>
+                                    <form 
+                                        method="POST"
+                                        action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                    >
+                                        <button 
+                                            class="btn btn-sm mb-2 ms-2"
+                                            style="background-color:#222; color:white;"
+                                        >
+                                            Delete
+                                        </button>
                                     </form>
                                     <% } %>
+
                                 </div>
                             </div>
+
                         </div>
                         <% } %>
+
                     </div>
                 </div>
 

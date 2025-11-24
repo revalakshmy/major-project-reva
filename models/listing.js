@@ -1,42 +1,38 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Review=require("./review.js");
-
+const Review = require("./review.js");
 
 const listingSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-    },
-    image:{ 
-        url:String,
-        filename:String,
+    title: { type: String, required: true },
+    description: { type: String },
+    image: {
+        url: String,
+        filename: String,
     },
     price: Number,
     location: String,
+    pincode: String,          // ⭐ NEW
     country: String,
-    reviews:[
+    lat: Number,              // ⭐ NEW
+    lng: Number,              // ⭐ NEW
+
+    reviews: [
         {
-        type:Schema.Types.ObjectId,
-        ref:"Review"
+            type: Schema.Types.ObjectId,
+            ref: "Review",
         }
     ],
-    owner:{
+
+    owner: {
         type: Schema.Types.ObjectId,
-        ref: "User",  
+        ref: "User",
     },
 });
 
-
-listingSchema.post("findOneAndDelete",async(listing)=>{
-    if(listing){
-        await Review.deleteMany({_id:{$in:listing.reviews}});
+listingSchema.post("findOneAndDelete", async (listing) => {
+    if (listing) {
+        await Review.deleteMany({ _id: { $in: listing.reviews } });
     }
 });
 
-// Correct usage: pass model name and schema
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;
+module.exports = mongoose.model("Listing", listingSchema);

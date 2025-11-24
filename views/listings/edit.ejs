@@ -1,53 +1,58 @@
 <% layout("/layouts/boilerplate") %>
+
 <body>
-<div class="row mt-3"> 
-   <div class="col-8 offset-2">
-    <form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data" >
-    <h3 style="color: #fe242f; border: none;">EDIT A LISTING</h3>
-    <div class="mb-3"> 
-      <label for="title" class="form-label">Title</label> 
-     <input name="listing[title]" value="<%= listing.title %>" class="form-control" required/>
-     <div class="invalid-feedback">Title required</div> 
+  <div class="row">
+    <div class="col-6 offset-3">
+
+      <form method="POST"
+            action="/listings/<%= listing._id %>?_method=PUT"
+            enctype="multipart/form-data">
+
+        <h3 class="text-danger my-3">EDIT A LISTING</h3>
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input name="listing[title]" value="<%= listing.title %>" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Image</label>
+          <input name="listing[image]" type="file" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Price</label>
+          <input name="listing[price]" value="<%= listing.price %>" class="form-control" type="number" required>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Location</label>
+            <input name="listing[location]" value="<%= listing.location %>" class="form-control" required>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Pincode</label>
+            <input name="listing[pincode]" value="<%= listing.pincode %>" class="form-control" required>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Country</label>
+            <input name="listing[country]" value="<%= listing.country %>" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="text-center mt-3">
+          <button class="btn btn-danger px-4">EDIT</button>
+        </div>
+
+      </form>
+
     </div>
-    
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <input name="listing[description]" class="form-control" value="<%= listing.description %>" required/> 
-      <div class="invalid-feedback">Description required</div>
-   </div>
-    
-   <div class="mb-3">
-      <label for="image" class="form-label">Image</label>
-      <input name="listing[image]" class="form-control" type="file"/>
-      <div class="invalid-feedback">Enter a valid URL</div> 
-   </div>
-    
-   <div>
-      <label for="price" class="form-label">Price</label>
-      <input name="listing[price]" value="<%= listing.price %>" class="form-control" required type="number"/>
-      <div class="invalid-feedback">Price required</div> 
-   </div>
-    
-   <div>
-      <label for="location" class="form-label">Location</label> 
-      <input name="listing[location]" value="<%= listing.location %>" class="form-control" required/>
-      <div class="invalid-feedback">Location required</div>
-   </div>
-    
-   <div>
-      <label for="country" class="form-label">Country</label> 
-     <input name="listing[country]" value="<%= listing.country %>" class="form-control" required/>
-     <div class="invalid-feedback">Country required</div> 
-   </div>
-    <br>
-    <div class="btndiv">
-    <button id="mybutt" class="btn" style="color: white;">EDIT</button>  
-    </div>
-  
-    <br>
-    <br>
-   </form>
-   </div>
-</div>
-<script src="/js/script.js"></script>
+  </div>
 </body>

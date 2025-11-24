@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 module.exports.listingSchema = Joi.object({
     listing: Joi.object({
@@ -7,16 +7,22 @@ module.exports.listingSchema = Joi.object({
         location: Joi.string().required(),
         country: Joi.string().required(),
         price: Joi.number().required().min(0),
-        image: Joi.object({
-            url: Joi.string().allow('', null).optional()
-        }).optional()
+
+        pincode: Joi.alternatives()
+            .try(
+                Joi.string().length(6),
+                Joi.number().integer().min(100000).max(999999)
+            )
+            .required(),
+
+        lat: Joi.number().optional(),
+        lng: Joi.number().optional(),
     }).required(),
 });
 
-// Add the reviewSchema export
 module.exports.reviewSchema = Joi.object({
     review: Joi.object({
-        rating: Joi.number().required().min(1).max(5), // Rating should be between 1 and 5
+        rating: Joi.number().required().min(1).max(5),
         comment: Joi.string().required(),
     }).required(),
 });
