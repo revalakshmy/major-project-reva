@@ -1,152 +1,113 @@
-<% layout ("/layouts/boilerplate") %>
+<% layout("/layouts/boilerplate") %>
 
 <body>
-    
-    <style>
-    #filters{
-        display:flex;
-        flex-wrap:wrap;
-        align-items: center;
-    }
 
+  <!-- HERO -->
+  <section class="stayzly-hero">
+    <h2>Find your perfect stay</h2>
+    <p>Discover amazing places to stay around the world</p>
+  </section>
 
-    .filter{
-        text-align:center;
-        margin-right:2rem;
-        margin-top:2rem;
-        opacity: 0.7;
-        font-size:1rem;
-    }
-
-
-    .filter:hover{
-        opacity: 1;
-        cursor: pointer;
-    }
-
-    .tax-info{
-        display: none;
-    }
-
-    .tax-toggle{
-        border:1px solid black;
-        
-        color: black;
-        border-radius:1rem;
-        height:2.9rem;
-        padding: 0.75rem;
-        margin-left:8rem;
-        margin-top: 0.75rem;
-        display:flex;
-        align-items:center;
-    }
-
-    </style>
-   
-    <div id="filters">
-        <div class="filter">
-         <div><i class="fa-solid fa-fire"></i></div>
-         <p>Trending</p>
-        </div>
-
-        <div class="filter">
-         <div><i class="fa-solid fa-bed"></i></i></div>
-         <p>Rooms</p>
-        </div>
-
-        <div class="filter">
-         <div><i class="fa-solid fa-building"></i></div>
-         <p>Cities</p>
-        </div>
-
-
-        <div class="filter">
-         <div><i class="fa-solid fa-mountain"></i></div>
-         <p>Mountains</p>
-        </div>
-
-
-        <div class="filter">
-         <div><i class="fa-brands fa-fort-awesome"></i></div>
-         <p>Castles</p>
-        </div>
-         
-
-        <div class="filter">
-         <div><i class="fa-solid fa-person-swimming"></i></div>
-         <p>Pools</p>
-        </div>
-         
-
-        <div class="filter">
-         <div><i class="fa-solid fa-cow"></i></div>
-         <p>Farms</p>
-        </div>
-
-
-        <div class="filter">
-         <div><i class="fa-solid fa-tent"></i></div>
-         <p>Camping</p>
-        </div>
-
-        
-        <div class="filter">
-         <div><i class="fa-solid fa-snowflake"></i></div>
-         <p>Arctic</p>
-        </div>
-
-
-        
-        <div class="tax-toggle">
-            <div class="form-check-reverse form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
-            </div>
-        </div>
-
-
-
-
-
+  <!-- CONTROLS -->
+  <section class="container content">
+    <div class="stayzly-controls" style="margin-top:12px;">
+      <div class="stayzly-results"><%= allListings.length %> stays found</div>
+      
     </div>
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 mt-3"> 
-    <%for(let listing of allListings){ %>
-    <div class="card col listing-card">
-    <a href="/listings/<%=listing._id %>" class="listing-link">
-       <img src="<%-listing.image.url%>" class="card-img-top" alt="listing_image" style="height:20rem;">
-        <div class="card-img-overlay"></div>
-       <div class="card-body">
-          <p class="card-text">
-            
-            <b><%= listing.title %></b><br> &#8377;<%= listing.price.toLocaleString("en-IN") %>/night<i class="tax-info">&nbsp; +18% GST</i>
-        </p>
-    </a>
-        </div>
-   </div>
 
-   <% } %>
-</div>
+    <!-- LISTINGS GRID -->
+    <div class="stayzly-list-grid">
+
+      <% for (let listing of allListings) { %>
+
+        <article class="stayzly-card listing-card card">
+
+          <a href="/listings/<%= listing._id %>" class="listing-link" style="text-decoration:none; color:inherit;">
+
+            <!-- IMAGE -->
+            <div class="media-wrap" style="position:relative;">
+              <img
+                src="<%- listing.image.url %>"
+                alt="<%= listing.title %>"
+                class="card-img-top stayzly-media"
+                style="height:220px; object-fit:cover;"
+              />
+
+              <% if (listing.isVerified) { %>
+                <div class="stayzly-badge verified">✔ Verified</div>
+              <% } %>
+
+              <% if (listing.available === false || listing.isAvailable === false) { %>
+                <div class="stayzly-badge unavailable">Not Available</div>
+              <% } %>
+            </div>
+
+            <!-- CARD BODY -->
+            <div class="card-body" style="padding:16px 18px;">
+
+              <!-- TITLE + RATING -->
+              <div class="stayzly-title-row">
+                <h5><%= listing.title %></h5>
+
+                <% if (listing.rating) { %>
+                  <div class="stayzly-rating">★ <%= listing.rating %></div>
+                <% } %>
+              </div>
+
+              <!-- LOCATION -->
+              <div class="stayzly-meta">
+                <span>📍 <%= listing.location %></span>
+              </div>
+
+              <!-- INFO ROW (guests, beds, baths) -->
+              <div class="stayzly-info-row">
+                    <span><i class="fa-solid fa-users"></i> <%= listing.guests || 1 %></span>
+                    <span><i class="fa-solid fa-bed"></i> <%= listing.bedrooms || 1 %></span>
+                    <span><i class="fa-solid fa-bath"></i> <%= listing.bathrooms || 1 %></span>
+             </div>
 
 
-    <!--<ul>
-        <%for(let listing of allListings){ %>
-        <li><a href="/listings/<%=listing._id %>"> <%= listing.title %></a></li>
-        <% } %>
-    </ul>-->
-</body>
+              <!-- PRICE + REVIEW COUNT -->
+              <div class="stayzly-price-row" style="margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
+                
+                <div class="stayzly-price">
+                  ₹<%= listing.price.toLocaleString("en-IN") %>
+                  <span style="color:#9aa6b2;"> / night</span>
+                  <i class="tax-info" style="display:none;"> +18% GST</i>
+                </div>
 
+                <% if (listing.reviews && listing.reviews.length > 0) { %>
+                  <div class="stayzly-review-count" style="color:#9aa6b2; font-size:14px;">
+                    (<%= listing.reviews.length %> reviews)
+                  </div>
+                <% } %>
 
-<script>
-    //add event listener 
-    let taxbutton=document.getElementById("switchCheckDefault");
-    taxbutton.addEventListener("click",()=>{
-        let taxinfo=document.getElementsByClassName("tax-info");
-        for(info of taxinfo){
-            if(info.style.display != "inline"){
-                info.style.display="inline";
-            } else{
-                info.style.display="none";
-            }
+              </div>
+
+            </div> <!-- END card-body -->
+
+          </a>
+
+        </article>
+
+      <% } %> <!-- END FOR LOOP -->
+
+    </div> <!-- END GRID -->
+
+  </section>
+
+  <!-- TAX TOGGLE SCRIPT -->
+  <script>
+    (function () {
+      const taxbutton = document.getElementById("switchCheckDefault");
+      if (!taxbutton) return;
+      taxbutton.addEventListener("click", () => {
+        const taxinfo = document.getElementsByClassName("tax-info");
+        for (const info of taxinfo) {
+          info.style.display = info.style.display !== "inline" ? "inline" : "none";
         }
-    });
-</script>
+      });
+    })();
+  </script>
+
+</body>

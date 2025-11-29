@@ -358,6 +358,1410 @@ body {
 .dark-mode .tax-toggle {
     box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
 }
+/* Flash / Toast styles (dark polished theme) */
+.flashes-wrapper {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  width: calc(100% - 48px);
+  max-width: 760px;
+  pointer-events: none; /* allow click-through except on children */
+}
+
+.flash-msg {
+  pointer-events: auto;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: #eaf3ff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 10px auto;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 12px 30px rgba(3,8,15,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  transform: translateY(-12px) scale(.995);
+  opacity: 0;
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .28s ease, box-shadow .18s ease;
+}
+
+/* make them visible */
+.flash-msg.visible {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* type styles */
+.flash-success { border-left: 4px solid rgba(155,107,255,0.95); }
+.flash-error   { border-left: 4px solid rgba(254,36,47,0.95); }
+.flash-warning { border-left: 4px solid rgba(255,165,0,0.95); }
+.flash-info    { border-left: 4px solid rgba(102,204,255,0.95); }
+
+/* Icon */
+.flash-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  color: currentColor;
+  margin-top: 2px;
+}
+.flash-success .flash-icon { color: rgba(155,107,255,0.95); }
+.flash-error .flash-icon   { color: rgba(254,36,47,0.95); }
+.flash-warning .flash-icon { color: rgba(255,165,0,0.95); }
+.flash-info .flash-icon    { color: rgba(102,204,255,0.95); }
+
+/* body text */
+.flash-body { flex: 1 1 auto; min-width: 0; }
+.flash-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; color: #f6e7ff; }
+.flash-text  { font-size: 14px; color: #d6e9ff; line-height: 1.25; }
+
+/* close button */
+.flash-close {
+  margin-left: 12px;
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 20px;
+  line-height: 1;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: start;
+  transition: background .12s ease, color .12s ease;
+}
+.flash-close:hover { background: rgba(255,255,255,0.02); color: #fff; }
+
+/* responsive */
+@media (max-width: 640px){
+  .flashes-wrapper { top: 12px; width: calc(100% - 28px); }
+  .flash-msg { padding: 10px 12px; border-radius: 10px; }
+  .flash-title { font-size: 13px; }
+  .flash-text { font-size: 13px; }
+}
+/* --- Toast positioning & stacking fixes --- */
+
+/* Set a navbar-height variable (fallback 64px). If your navbar is 72px, set --navbar-height:72px on body or .navbar */
+:root {
+  --toast-navbar-offset: 64px;
+  --toast-max-height: calc(100vh - 140px); /* prevents toasts from covering page */
+}
+
+/* wrapper placed under navbar, centered, non-overlapping */
+.flashes-wrapper {
+  position: fixed;
+  top: calc(var(--toast-navbar-offset) + 12px); /* sits below navbar */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1400;
+  width: calc(100% - 48px);
+  max-width: 760px;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;    /* stack vertically */
+  gap: 10px;                 /* space between toasts so they never overlap */
+  max-height: var(--toast-max-height);
+  overflow-y: auto;          /* allow scrolling when many toasts */
+  padding-right: 6px;        /* room for scrollbar if appears */
+}
+
+/* each toast */
+.flash-msg {
+  pointer-events: auto;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color: #eaf3ff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 0;                  /* spacing handled by wrapper gap */
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 12px 30px rgba(3,8,15,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  transform: translateY(-8px) scale(.995);
+  opacity: 0;
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), opacity .28s ease, box-shadow .18s ease;
+}
+
+/* visible state */
+.flash-msg.visible {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* stronger separation for first toast so avatar doesn't overlap */
+.flashes-wrapper .flash-msg:first-child {
+  margin-top: 2px;
+}
+
+/* small tweak: ensure inner content doesn't wrap oddly near avatar */
+.flash-body { flex: 1 1 auto; min-width: 0; }
+
+/* responsive: reduce width and offset on small screens */
+@media (max-width: 640px) {
+  :root { --toast-navbar-offset: 56px; }
+  .flashes-wrapper { top: calc(var(--toast-navbar-offset) + 8px); width: calc(100% - 28px); }
+  .flash-msg { padding: 10px 12px; border-radius: 10px; }
+}
+
+/* optional: a subtle blurred backdrop for strong contrast (uncomment if you like) */
+/*
+.flashes-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(3px);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: .02;
+}
+*/
+/* StayZly Gradient — Blue → Purple → Pink */
+:root {
+  --stayzly-grad: linear-gradient(90deg, #6BB5FF, #A578FF, #FF79C8);
+}
+
+/* Apply gradient background to success and error flash */
+.flash-msg {
+  background: var(--stayzly-grad) !important;
+  color: white !important;
+  border: none !important;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* Improve contrast for text */
+.flash-title { color: white !important; }
+.flash-text  { color: #f8f8f8 !important; }
+
+/* Icon color adjustment */
+.flash-icon { 
+  background: rgba(255,255,255,0.15) !important; 
+  color: white !important;
+}
+
+.navbar-toggler {
+  border: none !important;
+  outline: none !important;
+}
+
+.custom-toggler-icon svg {
+  stroke: #ffffff;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.navbar-toggler:hover .custom-toggler-icon svg {
+  opacity: 1;
+}
+.stayzly-heading {
+  text-align: center;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+
+  background: linear-gradient(135deg, #7aa7ff, #ff6ad5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 2px 18px rgba(120, 90, 255, 0.25);
+}
+.auth-title {
+  text-align: center;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-weight: 300;
+  font-size: 25px;
+  letter-spacing: -0.3px;
+  margin-bottom: 20px;
+
+  /* Premium gradient */
+  background: linear-gradient(135deg, #8fc6ff, #e38dff, #ff7bd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Soft glow for premium effect */
+  text-shadow: 0 2px 12px rgba(255, 120, 220, 0.18);
+}
+.auth-page {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 60px 0;
+
+  background: radial-gradient(700px 320px at 50% 0%, rgba(110,75,255,0.06), transparent),
+              linear-gradient(180deg, #071022 0%, #0b1724 100%);
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+/* ---------- Shared premium heading (same as signup) ---------- */
+.form-heading {
+  text-align: center;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.2px;
+  margin-bottom: 18px;
+
+  background: linear-gradient(135deg, #8fc6ff, #b89cff, #ff7bd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 1px 10px rgba(255,120,220,0.10);
+}
+
+/* ---------- Shared premium submit pill (same as signup) ---------- */
+.premium-submit {
+  margin-top: 20px;
+  display: block;
+  width: 190px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 12px 22px;
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+
+  background: linear-gradient(135deg, rgba(155,107,255,0.28), rgba(255,110,199,0.28));
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 12px 30px rgba(155,107,255,0.18), inset 0 1px 1px rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+.premium-submit:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 14px 36px rgba(155,107,255,0.22), inset 0 1px 2px rgba(255,255,255,0.06);
+}
+.premium-submit:active { transform: scale(.98); }
+/* ================= Elegant glass toasts ================== */
+
+/* wrapper: fixed and centered at top */
+.flashes-wrapper {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  pointer-events: none; /* allow clicks to pass through except the toasts themselves */
+  width: calc(100% - 48px);
+  max-width: 820px;
+  padding: 0 12px;
+}
+
+/* base toast card */
+.flash-msg {
+  pointer-events: auto; /* allow clicks inside the toast */
+  width: 100%;
+  min-width: 320px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 30px rgba(2,8,15,0.45);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  color: #e6f3ff;
+  transform: translateY(-8px) scale(.995);
+  opacity: 0;
+  transition: transform .36s cubic-bezier(.2,.9,.2,1), opacity .36s ease, box-shadow .2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* visible state (your JS toggles .visible) */
+.flash-msg.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* left icon circle */
+.flash-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35) inset;
+}
+
+/* message content */
+.flash-body { display: flex; flex-direction: column; gap: 4px; }
+.flash-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+}
+.flash-text {
+  font-size: 13px;
+  color: rgba(230,240,255,0.85);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+/* close button (right-aligned) */
+.flash-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  transition: transform .12s, background .12s;
+}
+.flash-close:hover { transform: translateY(-2px); background: rgba(255,255,255,0.06); }
+
+/* ---------------- color variants ---------------- */
+/* Error (soft warm/pink) */
+.flash-error .flash-icon {
+  background: linear-gradient(180deg, rgba(220,75,110,0.98), rgba(200,55,95,0.98));
+  box-shadow: 0 8px 26px rgba(220,75,110,0.18);
+}
+.flash-error .flash-title { color: #fff8f9; }
+.flash-error .flash-text { color: rgba(255,240,246,0.92); }
+
+/* Success (soft green) */
+.flash-success .flash-icon {
+  background: linear-gradient(180deg, rgba(54,200,112,0.95), rgba(37,170,95,0.95));
+  box-shadow: 0 8px 26px rgba(37,170,95,0.14);
+}
+.flash-success .flash-title { color: #f6fff7; }
+.flash-success .flash-text { color: rgba(245,255,248,0.94); }
+
+/* neutral/notice (if needed) */
+.flash-notice .flash-icon {
+  background: linear-gradient(180deg, rgba(90,130,255,0.95), rgba(50,100,230,0.95));
+  box-shadow: 0 8px 26px rgba(50,100,230,0.14);
+}
+
+/* svg icon color: always white for contrast */
+.flash-icon svg { width: 18px; height: 18px; display:block; fill: #fff !important; }
+
+/* smaller screens: reduce width & spacing */
+@media (max-width: 520px) {
+  .flashes-wrapper { top: 16px; width: calc(100% - 20px); padding: 0 8px; }
+  .flash-msg { padding: 10px 12px; border-radius: 10px; }
+  .flash-icon { width: 40px; height: 40px; border-radius: 8px; }
+  .flash-close { width: 28px; height: 28px; top: 8px; right: 8px; }
+}
+/* little subtle entrance glow on appear */
+.flash-msg.visible::after{
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.02), transparent 60%);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity .4s ease;
+}
+/* Make flash message super transparent + glassy */
+.flash-msg {
+  background: rgba(255, 255, 255, 0.06) !important; /* ultra transparent base */
+  backdrop-filter: blur(18px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Add a super soft gradient overlay (transparent, elegant) */
+.flash-msg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(135, 206, 250, 0.18),
+    rgba(168, 127, 255, 0.18),
+    rgba(255, 136, 200, 0.18)
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+.flash-msg {
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25) !important;
+}
+/* ================= Theme compatibility layer =================
+   Minimal, safe overrides so toggling `body.dark-mode` works
+   without changing back-end or large CSS refactors.
+   Place this at the very end of your main stylesheet.
+=================================================================*/
+
+/* --- Light (default) --- */
+body:not(.dark-mode) {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+}
+
+/* Ensure navbar shows light background unless dark-mode is active */
+body:not(.dark-mode) .navbar {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+}
+body:not(.dark-mode) .navbar a,
+body:not(.dark-mode) .nav-link {
+  color: #222222 !important;
+}
+
+/* Footer light */
+body:not(.dark-mode) .f-info {
+  background-color: #ebebeb !important;
+  color: #222222 !important;
+}
+body:not(.dark-mode) .f-info a,
+body:not(.dark-mode) .f-info p,
+body:not(.dark-mode) .f-info i {
+  color: #222222 !important;
+}
+
+/* Cards / listing light */
+body:not(.dark-mode) .listing-card {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+
+/* Forms / inputs light */
+body:not(.dark-mode) .form-control,
+body:not(.dark-mode) input,
+body:not(.dark-mode) textarea {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-color: rgba(34,34,34,0.08) !important;
+}
+
+/* Links / icons light */
+body:not(.dark-mode) a { color: #0b5cff !important; }
+body:not(.dark-mode) i { color: #222222 !important; }
+
+/* AI components light */
+body:not(.dark-mode) .ai-floating-btn { background: linear-gradient(to right,#8a2be2,#4f46e5) !important; color: #fff !important; }
+body:not(.dark-mode) .ai-modal { background: #ffffff !important; color: #0b1220 !important; }
+
+/* --- Dark mode overrides --- */
+body.dark-mode {
+  background-color: #071022 !important;
+  color: #eaf6ff !important;
+}
+
+/* navbar in dark mode */
+body.dark-mode .navbar {
+  background-color: #0F172A !important;
+  color: #ffffff !important;
+}
+body.dark-mode .navbar a,
+body.dark-mode .nav-link {
+  color: #ffffff !important;
+}
+
+/* footer in dark */
+body.dark-mode .f-info {
+  background-color: #0F172A !important;
+  color: #A5B4FC !important;
+}
+body.dark-mode .f-info a,
+body.dark-mode .f-info p,
+body.dark-mode .f-info i {
+  color: #A5B4FC !important;
+}
+
+/* cards / listing dark */
+body.dark-mode .listing-card {
+  background-color: #111827 !important;
+  border-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+/* forms / inputs dark */
+body.dark-mode .form-control,
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #0F1A3A !important;
+  color: #ffffff !important;
+  border-color: #334155 !important;
+}
+
+/* links / icons dark */
+body.dark-mode a { color: #A5B4FC !important; }
+body.dark-mode i { color: #ffffff !important; }
+
+/* AI components dark */
+body.dark-mode .ai-floating-btn { background-color: #A855F7 !important; color: #fff !important; }
+body.dark-mode .ai-modal { background-color: #0F172A !important; color: #fff !important; }
+
+/* Flash/Toast adjustments to ensure readability in both themes */
+body:not(.dark-mode) .flash-msg {
+  background: linear-gradient(180deg,#fff,#f7f8fb) !important;
+  color: #0b1220 !important;
+  border: 1px solid rgba(11,17,32,0.06) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06) !important;
+}
+body.dark-mode .flash-msg {
+  background: rgba(255,255,255,0.03) !important;
+  color: #eaf6ff !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: 0 12px 30px rgba(3,8,15,0.45) !important;
+}
+
+/* small utility: ensure theme button is visible */
+#theme-toggle { z-index: 1500 !important; }
+
+/* keep this block last for max override power */
+/* ----- AI Itinerary Button: Sleek Glassy Style ----- */
+.stayzly-ai-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(120, 90, 255, 0.35),
+    rgba(255, 120, 200, 0.35)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 14px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  box-shadow: 0 4px 18px rgba(90, 70, 180, 0.25);
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.stayzly-ai-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(140, 110, 255, 0.45),
+    rgba(255, 140, 220, 0.45)
+  );
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(120, 90, 255, 0.35);
+}
+
+/* Icon styling */
+.stayzly-ai-btn i {
+  font-size: 1rem;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.7));
+}
+/* -------------------------------
+   PREMIUM GLASSY DIFFERENTIATED FOOTER
+---------------------------------*/
+.site-footer {
+  margin-top: 80px;
+  padding: 60px 0 40px;
+  background: rgba(10, 13, 23, 0.45);        /* transparent glass layer */
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 24px 24px 0 0;
+
+  /* glowing gradient separator */
+  border-top: 1.5px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 -12px 30px rgba(120, 90, 255, 0.08);
+}
+
+/* Center alignment */
+.center-footer {
+  text-align: center;
+}
+
+/* Brand Text */
+.footer-brand strong {
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #8f8fff, #ff84d6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-sub {
+  margin-top: 6px;
+  color: #b7c3d9;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------
+   SOCIAL ICONS
+-----------------------------------*/
+.social-row {
+  margin: 28px 0 20px;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+}
+
+.social-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+}
+
+.social-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: white;
+  opacity: 0.85;
+}
+
+.social-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(120, 90, 255, 0.3);
+  background: linear-gradient(135deg, rgba(120, 90, 255, 0.4), rgba(255, 120, 200, 0.4));
+}
+
+/* Instagram special gradient */
+.icon-instagram {
+  background: radial-gradient(circle at 30% 30%, #ffdd55, #ff543f, #c837ab);
+}
+
+.icon-instagram:hover {
+  filter: brightness(1.2);
+}
+
+/* --------------------------------
+   COPYRIGHT + LINKS
+-----------------------------------*/
+.copy-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  color: #8f9bb3;
+  font-size: 0.85rem;
+}
+
+.footer-link {
+  color: #c5caf5;
+  text-decoration: none;
+  transition: 0.25s;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(140, 100, 255, 0.7);
+}
 
 
+/* FOR SPLASH SCREEN ONLY */
+/* Splash screen styles */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(800px 400px at 30% 40%, rgba(123,64,255,0.10), transparent 10%),
+              radial-gradient(800px 400px at 70% 60%, rgba(254,36,47,0.06), transparent 10%),
+              linear-gradient(180deg,#05060b 0%, #081022 100%);
+  color: #fff;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+
+.splash-inner {
+  text-align: center;
+  max-width: 720px;
+  width: 80%;
+  transform: translateY(0);
+}
+
+.splash-logo {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  margin: 0 auto 12px;
+  border-radius: 999px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+  background: linear-gradient(90deg,#4f8cff,#ff7ab6);
+  display: inline-block;
+  padding: 10px;
+}
+
+.splash-title {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  margin: 8px 0 4px;
+  letter-spacing: -0.02em;
+  color: #d7a7ff;
+}
+
+.splash-sub {
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 22px;
+  font-size: 14px;
+}
+
+/* Progress */
+.splash-progress-wrap {
+  width: 52%;
+  height: 8px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+.splash-progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4f8cff, #ff7ab6);
+  transition: width 350ms linear;
+}
+
+/* percent number at right */
+.splash-percent {
+  margin-top: 12px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* fade-out animation */
+.splash-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+.splash-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+/* Splash basic */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(800px 400px at 30% 40%, rgba(123,64,255,0.10), transparent 10%),
+              radial-gradient(800px 400px at 70% 60%, rgba(254,36,47,0.06), transparent 10%),
+              linear-gradient(180deg,#05060b 0%, #081022 100%);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+
+.splash-inner { text-align:center; width:80%; max-width:720px; }
+
+.splash-logo { width:86px; height:86px; margin:0 auto 12px; display:inline-block; }
+.splash-title { font-size:40px; margin:6px 0 4px; color:#d7a7ff; }
+.splash-sub { color: rgba(255,255,255,0.55); margin-bottom:22px; font-size:14px; }
+
+/* Progress */
+.splash-progress-wrap {
+  width: 52%;
+  height: 8px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  overflow: hidden;
+}
+.splash-progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4f8cff, #ff7ab6);
+  /* transition duration will be set by JS to match step interval for crisp filling */
+}
+
+/* percent number */
+.splash-percent { margin-top:12px; color: rgba(255,255,255,0.75); font-weight:600; font-size:16px; }
+
+/* fade-out */
+.splash-hidden { opacity: 0; pointer-events: none; transition: opacity 500ms ease; }
+
+.splash-logo svg * {
+  fill: #ffffff !important;
+}
+
+/* Splash container */
+#splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(800px 400px at 30% 40%, rgba(123,64,255,0.10), transparent 10%),
+              radial-gradient(800px 400px at 70% 60%, rgba(254,36,47,0.06), transparent 10%),
+              linear-gradient(180deg,#05060b 0%, #081022 100%);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+
+.splash-inner {
+  text-align: center;
+  width: 80%;
+  max-width: 720px;
+}
+
+.splash-logo {
+  width: 86px;
+  height: 86px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  border-radius: 0 !important;   /* remove circular mask */
+  background: none !important;    /* remove gradient circle */
+  padding: 0 !important;          /* remove extra padding */
+  box-shadow: none !important;    /* remove glow/shadow */
+}
+
+
+.splash-title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #d7a7ff;
+}
+
+.splash-sub {
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 22px;
+}
+
+.splash-progress-wrap {
+  width: 52%;
+  margin: 0 auto;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  overflow: hidden;
+}
+
+.splash-progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4f8cff, #ff7ab6);
+}
+
+.splash-percent {
+  margin-top: 12px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
+}
+
+.splash-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+/* 
+FOR RESERVE BUTTON */
+
+.custom-fallback-flash {
+  transition: opacity 220ms ease;
+}
+/* Centered shimmer flash (copy-paste into your main CSS) */
+.center-flash {
+  position: fixed;
+  left: 50%;
+  top: 28px;                     /* distance from top; adjust if needed */
+  transform: translateX(-50%);
+  z-index: 99999;
+  min-width: 360px;
+  max-width: 880px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  color: #fff;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.6), 0 2px 8px rgba(0,0,0,0.6);
+  background: linear-gradient(90deg, rgba(10,12,20,0.75), rgba(15,20,32,0.6));
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.03);
+  overflow: hidden;
+  animation: flash-in 260ms ease;
+}
+
+/* small left pill icon box */
+.center-flash .flash-icon {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(90deg,#5aa1ff,#d36bff); /* blue→pink shimmer */
+  box-shadow: 0 8px 28px rgba(83,64,255,0.12), inset 0 -6px 18px rgba(0,0,0,0.06);
+  flex-shrink: 0;
+}
+
+/* text area */
+.center-flash .flash-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+  min-width: 0;
+}
+
+/* title and message */
+.center-flash .flash-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+}
+.center-flash .flash-msg {
+  font-size: 13px;
+  color: rgba(255,255,255,0.82);
+  opacity: 0.95;
+}
+
+/* close button */
+.center-flash .flash-close {
+  margin-left: 12px;
+  background: transparent;
+  border: 0;
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+.center-flash .flash-close:hover { color: #fff; background: rgba(255,255,255,0.02); }
+
+/* subtle pulse/glow */
+.center-flash::after{
+  content: "";
+  position: absolute;
+  right: -30%;
+  top: -40%;
+  width: 360px;
+  height: 260px;
+  background: radial-gradient(circle at 30% 30%, rgba(83,64,255,0.12), transparent 20%),
+              radial-gradient(circle at 70% 70%, rgba(255,80,168,0.08), transparent 20%);
+  pointer-events: none;
+  filter: blur(12px);
+}
+
+/* show animation */
+@keyframes flash-in {
+  from { transform: translateX(-50%) translateY(-8px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* hide class */
+.center-flash.hide {
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+/* ==========================
+   FLATPICKR FULL RESTORE FIX
+   ========================== */
+
+/* Restore the entire calendar visibility */
+.flatpickr-calendar {
+  background: #ffffff !important;
+  color: #111 !important;
+  border: 1px solid #ccc !important;
+}
+
+/* Month header */
+.flatpickr-months,
+.flatpickr-month,
+.flatpickr-current-month {
+  background: #fff !important;
+  color: #111 !important;
+}
+
+/* Month & Year dropdowns */
+.flatpickr-monthDropdown-months,
+.flatpickr-yearDropdown {
+  background: #ffffff !important;
+  color: #111 !important;
+}
+
+/* Weekdays row */
+.flatpickr-weekdaycontainer,
+.flatpickr-weekday,
+.flatpickr-weekdays {
+  background: #ffffff !important;
+  color: #555 !important;
+  font-weight: 600 !important;
+}
+
+/* Days grid */
+.flatpickr-days {
+  background: #ffffff !important;
+  color: #111 !important;
+}
+
+.flatpickr-day {
+  background: #ffffff !important;
+  color: #111 !important;
+  border-radius: 4px !important;
+}
+
+/* Today highlight */
+.flatpickr-day.today {
+  border: 1px solid #3e63ff !important;
+  background: #eef3ff !important;
+  color: #111 !important;
+}
+
+/* Hover */
+.flatpickr-day:hover {
+  background: #e6ecff !important;
+  color: #111 !important;
+}
+
+/* Selected date highlight */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: #3e63ff !important;
+  color: #ffffff !important;
+}
+/* --- FIX: force all days to be visible --- */
+.flatpickr-day {
+  color: #111 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.flatpickr-day.flatpickr-disabled {
+  color: #ccc !important;
+  opacity: 0.5 !important;
+}
+
+.flatpickr-day.inRange,
+.flatpickr-day.nextMonthDay,
+.flatpickr-day.prevMonthDay {
+  color: #555 !important;
+  opacity: 1 !important;
+}
+.flatpickr-days,
+.flatpickr-dayContainer {
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+/* Premium Back Button */
+.stayzly-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  border-radius: 8px;
+
+  font-size: 14.5px;
+  font-weight: 400;
+  color: #d4dcff;
+  text-decoration: none;
+
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(4px);
+
+  transition: all 0.25s ease;
+}
+
+/* Hover = soft glow + subtle lift */
+.stayzly-back-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(122,167,255,0.20);
+}
+
+/* Icon styling */
+.stayzly-back-btn i {
+  font-size: 14px;
+  color: #9eb6ff;
+  transition: color 0.2s ease;
+}
+
+.stayzly-back-btn:hover i {
+  color: #ffffff;
+}
+
+/* OWNER ACTION BUTTONS (match 'Reserve Now' look) */
+.owner-actions {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-top:12px;
+}
+
+/* OWNER ACTION BUTTONS (centered + bigger) */
+.owner-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* Bigger primary button style */
+.owner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 12px 20px;          /* bigger */
+  font-weight: 600;
+  font-size: 15px;             /* slightly bigger */
+  border-radius: 12px;
+  color: #fff;
+
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+
+  background: linear-gradient(90deg, var(--stay-accent), #ab6cff);
+  box-shadow: 0 8px 22px rgba(60, 30, 120, 0.25);
+
+  transition: transform 160ms cubic-bezier(.2,.9,.2,1),
+              box-shadow 160ms ease;
+}
+
+/* Danger button */
+.owner-btn--danger {
+  background: linear-gradient(90deg, #ff5c66, #ff3b4b);
+  box-shadow: 0 8px 22px rgba(255,80,90,0.25);
+}
+
+/* Hover effects */
+.owner-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+.owner-btn:active {
+  transform: translateY(-1px) scale(0.995);
+}
+
+/* Mobile layout */
+@media (max-width: 576px) {
+  .owner-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .owner-btn {
+    width: 100%;
+  }
+}
+
+#splash-screen .splash-inner {
+  transform: translate(-50%, -50%) scale(1.25); /* Increase overall size */
+  top: 50%;
+  left: 50%;
+  position: absolute;
+}
+
+.splash-logo {
+  width: 120px;  /* increase size */
+  height: auto;
+  margin-bottom: 15px;
+}
+.splash-title {
+  font-size: 48px;    /* bigger text */
+  margin-bottom: 5px;
+}
+
+.splash-sub {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
+.splash-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;   /* reduced from 12px → closer now */
+  justify-content: center;
+}
+
+.splash-percent {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  width: auto;       /* remove fixed width */
+  margin-left: 0px;  /* keep it tight */
+  padding: 0;
+}
+
+.splash-progress-wrap {
+  width: 260px;      /* increase bar width */
+  height: 12px;      /* increase height */
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.splash-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, #7aa7ff, #ff6ad5);
+  transition: width 0.2s ease;
+}
+
+
+.splash-progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;   /* STOP centering everything */
+  gap: 6px;                      /* very small gap */
+  width: fit-content;            /* prevent huge empty space */
+  margin: 0 auto;                /* center the WHOLE block */
+}
+
+.splash-progress-wrap {
+  width: 240px;    /* bar width */
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.splash-percent {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  padding-left: 4px;  /* tiny separation */
+  padding-top: 2px;
+}
+
+.splash-progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.splash-progress-wrap {
+  width: 240px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;  /* alignment fix */
+}
+
+.splash-percent {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+  padding-top: 1px;
+}
+
+/* ---------- DEFINES the bar height in one place ---------- */
+:root {
+  --splash-bar-width: 240px;
+  --splash-bar-height: 12px;   /* adjust this to increase/decrease thickness */
+}
+
+/* container is an inline-flex block sized to fit content */
+.splash-progress-container {
+  display: inline-flex;
+  align-items: center;       /* vertical centering */
+  justify-content: flex-start;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* the visible progress bar wrapper */
+.splash-progress-wrap {
+  width: var(--splash-bar-width);
+  height: var(--splash-bar-height);
+  background: rgba(255,255,255,0.16);
+  border-radius: calc(var(--splash-bar-height) / 2);
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;       /* centers inner moving bar vertically */
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* the inner moving bar fills 100% height of parent */
+.splash-progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: calc(var(--splash-bar-height) / 2);
+  transition: width .25s linear;
+  background: linear-gradient(135deg, #7aa7ff, #ff6ad5);
+  box-sizing: border-box;
+}
+
+/* MAKE THE % ELEMENT MATCH THE BAR HEIGHT EXACTLY */
+.splash-percent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* critical: make percent the same height as the bar so flex centering matches */
+  height: var(--splash-bar-height);
+  line-height: 1;                 /* avoid baseline shifts */
+  font-size: calc(var(--splash-bar-height) * 1); /* scale font relative to bar */
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  padding: 0 4px 0 6px;           /* small left padding to separate from bar */
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* Optional micro-nudge — uncomment only if needed (1px increments) */
+/*
+.splash-percent { transform: translateY(1px); }
+*/
 

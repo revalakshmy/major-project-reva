@@ -1,6 +1,7 @@
 const Listing = require("../models/listing");
 const axios = require("axios");
 
+
 // ⭐ Clean address for proper geocoding
 function cleanAddress(str) {
     // Removes wrong commas like "place,Delhi" → "place, Delhi"
@@ -13,6 +14,7 @@ module.exports.index = async (req, res) => {
     res.render("listings/index.ejs", {
         allListings,
         showAI: true,
+        showSplash:true
     });
 };
 

@@ -1,15 +1,101 @@
-<%if(success && success.length>0){ %>
-    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-        <%=success%>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-<% } %>
+<%
+  // normalize a value into an array of messages
+  const normalize = (v) => {
+    if (!v) return [];
+    if (Array.isArray(v)) return v;
+    return [v];
+  };
+  const successMsgs = normalize(success);
+  const errorMsgs = normalize(error);
 
+  // if no messages at all, render nothing
+  const totalMsgs = successMsgs.length + errorMsgs.length;
+%>
 
+<% if (totalMsgs > 0) { %>
+  <div class="flashes-wrapper" aria-live="polite" aria-atomic="true">
+    <% successMsgs.forEach(function(m){ %>
+      <div class="flash-msg flash-success" role="status" tabindex="0">
+        <button class="flash-close" aria-label="Dismiss">&times;</button>
+        <span class="flash-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="flash-body">
+          <div class="flash-title">Success</div>
+          <div class="flash-text"><%= m %></div>
+        </div>
+      </div>
+    <% }) %>
 
-<%if(error && error.length>0){ %>
-    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-        <%=error%>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <% errorMsgs.forEach(function(m){ %>
+      <div class="flash-msg flash-error" role="status" tabindex="0">
+        <button class="flash-close" aria-label="Dismiss">&times;</button>
+        <span class="flash-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="flash-body">
+          <div class="flash-title">Error</div>
+          <div class="flash-text"><%= m %></div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <script>
+    /* 
+      Robust client-side behavior:
+      - remove any Bootstrap-generated .btn-close inside .flashes-wrapper (if present)
+      - stagger entrance so toasts don't overlap visually
+      - auto dismiss + close button behavior
+    */
+    (function () {
+      const BASE_TIMEOUT = 5500; // ms each toast lives
+      const STAGGER = 120;       // ms between entrances
+      const REMOVE_DELAY = 320;  // ms after hide to remove element
+
+      function removeBootstrapCloseButtons() {
+        // Remove any Bootstrap close buttons that might have been rendered by other templates/includes
+        const bsButtons = Array.from(document.querySelectorAll('.flashes-wrapper .btn-close, .flashes-wrapper button.btn-close'));
+        bsButtons.forEach(btn => btn.remove());
+      }
+
+      function initToasts() {
+        // Defensive: remove bootstrap closes first
+        removeBootstrapCloseButtons();
+
+        const nodes = Array.from(document.querySelectorAll('.flashes-wrapper .flash-msg'));
+        nodes.forEach((node, idx) => {
+          // staggered entrance
+          setTimeout(() => node.classList.add('visible'), 40 + idx * STAGGER);
+
+          // auto-dismiss: earlier ones hide slightly earlier
+          const timeoutId = setTimeout(() => {
+            node.classList.remove('visible');
+            setTimeout(() => { try { node.remove(); } catch(e){} }, REMOVE_DELAY);
+          }, BASE_TIMEOUT + idx * 200);
+
+          // close button behaviour (custom .flash-close)
+          const btn = node.querySelector('.flash-close');
+          if (btn) {
+            btn.addEventListener('click', () => {
+              clearTimeout(timeoutId);
+              node.classList.remove('visible');
+              setTimeout(() => { try { node.remove(); } catch(e){} }, 220);
+            });
+          }
+
+          // keyboard access: Esc closes when focused
+          node.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') btn && btn.click();
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initToasts);
+      } else {
+        initToasts();
+      }
+    })();
+  </script>
 <% } %>

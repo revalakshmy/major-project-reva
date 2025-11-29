@@ -1,85 +1,105 @@
 <style>
-  .btn-search {
-    background-color: #fe242f;
+  /* --- BRAND GRADIENT LOGO + TEXT --- */
+  .stayzly-brand-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .stayzly-logo-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 22px;
     color: white;
-    border-radius: 25px;
+    background: linear-gradient(135deg, #6a5cff, #ff6ad5);
+    box-shadow: 0px 0px 15px rgba(130, 100, 255, 0.25);
   }
 
-  .btn-search:hover {
-    background-color: #fe242f;
-    color: white;
+  .stayzly-logo-text {
+    font-size: 28px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #7aa7ff, #ff6ad5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  .btn-search i {
-    display: inline;
-    margin-right: 0.5rem;
+  /* Keep your existing right side styling untouched */
+  .navbar-right-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
   }
 
-  #hosting:hover {
-    background-color: #D3D3D3;
-    border-radius: 25px;
-  }
-
-  /* Toggle button spacing */
   #theme-toggle {
-    margin-left: 1rem;
+    margin-left: 10px;
     border-radius: 50%;
     padding: 6px 10px;
   }
+
+  .stayzly-logo-img {
+  width: 38px;     /* change size here */
+  height: 38px;    /* keeps it perfectly proportional */
+  border-radius: 50%; /* if you want it round like the sample */
+}
+
+
 </style>
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/listings">
-      <i class="fa-regular fa-compass"></i>
+<nav class="navbar navbar-expand-md border-bottom sticky-top" style="background:#0B1220;">
+  <div class="container-fluid position-relative">
+
+    <!-- BRAND (CENTERED) -->
+    <a href="/listings" class="stayzly-brand-wrapper">
+      <img src="/images/d9de5b83-07d5-4315-8d79-8f7eb2af5451.svg" class="stayzly-logo-img" alt="StayZly Logo">
+      <div class="stayzly-logo-text">StayZly</div>
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 
-            aria-expanded="false" aria-label="Toggle navigation">
+
+    <!-- TOGGLER -->
+    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- RIGHT SIDE NAV OPTIONS -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      
+      
+      <div class="navbar-right-links">
+        <!-- Theme Button (unchanged functionality) -->
+        <button id="theme-toggle" class="btn btn-outline-secondary">
+          <i id="theme-icon" class="fa-solid fa-sun-bright"></i>
+        </button>
 
-      <!-- Left Side -->
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
-      </div>
+        <a class="nav-link" href="/about">About</a>
 
-      <!-- Center Search -->
-      <div class="navbar-nav mx-auto">
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search Destination"
-                 aria-label="Search"
-                 style="border-radius: 25px; padding: 0.5rem 3rem 0.5rem 3rem;" />
-          <button class="btn btn-search" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>Search
-          </button>
-        </form>
-      </div>
-
-      <!-- Right Side Options -->
-      <div class="navbar-nav ms-auto align-items-center">
-
-        <a class="nav-link" href="/listings/new" id="hosting">Become a host</a>
-
+       <a class="nav-link" href="/listings/new">Add Property</a>
         <% if (!currUser) { %>
-          <a class="nav-link" href="/signup"><b>Sign up</b></a>
-          <a class="nav-link" href="/login"><b>Login</b></a>
+          <a class="nav-link" href="/signup">Sign up</a>
+          <a class="nav-link" href="/login">Login</a>
         <% } %>
 
         <% if (currUser) { %>
-          <a class="nav-link" href="/logout"><b>Logout</b></a>
+          <a class="nav-link" href="/logout">Logout</a>
         <% } %>
 
-        <!-- 🌙 THEME TOGGLE BUTTON -->
+        <!-- Theme Button (unchanged functionality) -->
         <button id="theme-toggle" class="btn btn-outline-secondary">
-          <i id="theme-icon" class="fa-solid fa-moon"></i>
+          <i id="theme-icon" class="fa-solid fa-sun-bright"></i>
         </button>
 
       </div>
-
     </div>
+
   </div>
 </nav>

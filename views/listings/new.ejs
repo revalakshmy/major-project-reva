@@ -1,55 +1,63 @@
 <% layout("/layouts/boilerplate") %>
 
 <body>
-<div class="row">
-  <div class="col-6 offset-3">
 
-    <form method="POST" action="/listings" enctype="multipart/form-data" novalidate class="needs-validation">
+<div class="stayzly-form-wrapper">
+  <form method="POST" action="/listings" enctype="multipart/form-data" novalidate class="needs-validation stayzly-form">
 
-      <h3 class="text-danger my-3">CREATE A NEW LISTING</h3>
+    <h2 class="form-heading">Add Your Property</h2>
 
-      <div class="mb-3">
-        <label class="form-label">Title</label>
-        <input name="listing[title]" class="form-control" required>
+
+
+    <!-- TITLE -->
+    <div class="stayzly-input-group">
+      <label class="stayzly-label">Title</label>
+      <input name="listing[title]" class="stayzly-input form-control" required>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="stayzly-input-group">
+      <label class="stayzly-label">Description</label>
+      <textarea name="listing[description]" class="stayzly-textarea form-control" rows="4" required></textarea>
+    </div>
+
+    <!-- IMAGE -->
+    <div class="stayzly-input-group">
+      <label class="stayzly-label">Image</label>
+      <input name="listing[image]" type="file" class="stayzly-input form-control" required>
+    </div>
+
+    <!-- PRICE -->
+    <div class="stayzly-input-group">
+      <label class="stayzly-label">Price</label>
+      <input name="listing[price]" type="number" class="stayzly-input form-control" required>
+    </div>
+
+    <!-- LOCATION ROW -->
+    <div class="row">
+      <div class="col-md-4 stayzly-input-group">
+        <label class="stayzly-label">Location</label>
+        <input name="listing[location]" class="stayzly-input form-control" required>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Description</label>
-        <textarea name="listing[description]" class="form-control" required></textarea>
+      <div class="col-md-4 stayzly-input-group">
+        <label class="stayzly-label">Pincode</label>
+        <input name="listing[pincode]" class="stayzly-input form-control" required>
       </div>
 
-      <div class="mb-3">
-        <label class="form-label">Image</label>
-        <input name="listing[image]" type="file" class="form-control" required>
+      <div class="col-md-4 stayzly-input-group">
+        <label class="stayzly-label">Country</label>
+        <input name="listing[country]" class="stayzly-input form-control" required>
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Price</label>
-        <input name="listing[price]" type="number" class="form-control" required>
-      </div>
+    <!-- SUBMIT -->
+    <div class="text-center mt-4">
+      <button type="submit" class="premium-submit">Submit</button>
 
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <label class="form-label">Location</label>
-          <input name="listing[location]" class="form-control" required>
-        </div>
+    </div>
 
-        <div class="col-md-4 mb-3">
-          <label class="form-label">Pincode</label>
-          <input name="listing[pincode]" class="form-control" required>
-        </div>
-
-        <div class="col-md-4 mb-3">
-          <label class="form-label">Country</label>
-          <input name="listing[country]" class="form-control" required>
-        </div>
-      </div>
-
-      <div class="text-center">
-        <button class="btn btn-danger px-4">Submit</button>
-      </div>
-
-    </form>
-  </div>
+  </form>
 </div>
+
 </body>

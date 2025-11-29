@@ -1,0 +1,1564 @@
+/* figma-style.css
+   Non-destructive enhancements for Figma look.
+   Namespaced with 'stayzly-' but also lightly overrides
+   listing-card and card-img-top for compatibility.
+*/
+
+/* Theme tokens */
+:root{
+  --stay-bg: #071121;
+  --stay-panel: #0b1720;
+  --stay-muted: #9aa6b2;
+  --stay-accent: #7b5cff;
+  --stay-accent-2: #ff5a7a;
+  --stay-card-shadow: rgba(2,6,23,0.55);
+  --stay-radius: 14px;
+  --stay-font: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Base adjustments */
+body { background: linear-gradient(180deg, var(--stay-bg) 0%, #071422 100%); color: #e6eef6; font-family: var(--stay-font); }
+
+/* NAVBAR (non-destructive) */
+/* If your navbar uses .navbar (bootstrap), we style its inner layout using new helper classes */
+.stayzly-navbar {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  background: transparent;
+}
+.stayzly-navbar .nav-inner {
+  width:100%;
+  max-width:1200px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.stayzly-brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:center;
+  flex:1;
+}
+.stayzly-logo {
+  width:54px;height:54px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, #ff8ab2 0%, var(--stay-accent) 60%);
+  display:flex;align-items:center;justify-content:center;font-weight:700;color:white;
+  box-shadow:0 6px 20px rgba(123,92,255,0.12);
+  font-size:20px;
+}
+.stayzly-brand h1{margin:0;font-size:20px; font-weight:700; letter-spacing:0.4px; color: #e9d8ff}
+.stayzly-nav-right { display:flex; gap:18px; align-items:center; color:var(--stay-muted); font-size:14px; }
+
+/* HERO — compact / subtle variant (use this to replace previous .stayzly-hero block) */
+.stayzly-hero {
+  max-width: 880px;           /* keeps content centered but not too wide */
+  margin: 20px auto 12px;     /* less top/bottom spacing for a compact feel */
+  text-align: center;
+  padding: 0 14px;
+}
+
+.stayzly-hero h2 {
+  font-size: 40px;            /* compact, clean size like your screenshot */
+  font-weight: 600;           /* slightly lighter than ultra-bold */
+  margin: 0 0 8px 0;          /* tight spacing between heading and subtitle */
+  line-height: 1.08;          /* crisp vertical rhythm */
+  color: #f5f7fb;             /* off-white for good contrast on dark bg */
+  letter-spacing: 0.2px;
+}
+
+.stayzly-hero p {
+  font-size: 15px;          /* subtle, smaller subtitle */
+  color: rgba(170, 190, 205, 0.9); /* muted bluish-gray for elegance */
+  margin: 0;
+  font-weight: 450;
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  .stayzly-hero { margin: 36px auto 10px; }
+  .stayzly-hero h2 { font-size: 28px; }
+  .stayzly-hero p { font-size: 13px; }
+}
+
+
+/* Controls row */
+.stayzly-controls { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; gap:12px; }
+.stayzly-results { color:var(--stay-muted); font-size:14px; }
+.stayzly-filters-btn {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius:12px; padding:10px 14px; color:var(--stay-muted);
+  border:1px solid rgba(255,255,255,0.04); display:inline-flex; gap:8px; align-items:center; font-weight:600;
+}
+
+/* GRID: support multiple naming possibilities */
+.stayzly-list-grid,
+.list-grid,
+.listings-grid,
+.listing-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap:20px;
+}
+
+/* CARD styling (safe overrides for .listing-card + bootstrap .card) */
+.stayzly-card,
+.listing-card,
+.card.stayzly {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border-radius: var(--stay-radius);
+  overflow:hidden;
+  box-shadow: 0 12px 36px var(--stay-card-shadow);
+  border:1px solid rgba(255,255,255,0.03);
+  transition: transform .22s ease, box-shadow .22s ease;
+  position:relative;
+}
+.stayzly-card:hover,
+.listing-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(2,6,23,0.65); }
+
+/* Image */
+.stayzly-card .card-img-top,
+.card-img-top,
+.stayzly-media {
+  height:170px;
+  width:100%;
+  display:block;
+  object-fit:cover !important;
+  border-top-left-radius: var(--stay-radius);
+  border-top-right-radius: var(--stay-radius);
+}
+
+/* badges */
+.stayzly-badge,
+.badge.stayzly {
+  position:absolute; top:12px; right:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  padding:6px 10px; border-radius:12px; font-size:13px; color:var(--stay-muted);
+  display:inline-flex; gap:8px; align-items:center; border:1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(4px);
+}
+.stayzly-badge.verified { color:#e6f7ff; background: rgba(11,34,46,0.55); }
+
+/* unavailable overlay centered */
+.stayzly-badge.unavailable {
+  left:50%; transform:translateX(-50%); top:46%;
+  background: rgba(5,8,13,0.7); color:#fff; padding:8px 12px; border-radius:8px; font-weight:700;
+  box-shadow:0 6px 18px rgba(0,0,0,0.5);
+}
+
+/* card body */
+.stayzly-card .card-body,
+.listing-card .card-body {
+  padding:16px;
+  background: transparent;
+}
+.stayzly-title-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.stayzly-card h5, .stayzly-card h3, .listing-card h5 { margin:0; font-size:16px; color:#eaf3ff; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* rating */
+.stayzly-rating { color:#ffd84d; font-weight:700; font-size:14px; }
+
+/* meta */
+.stayzly-meta { margin-top:10px; color:var(--stay-muted); font-size:13px; display:flex; gap:10px; flex-wrap:wrap; }
+
+/* price */
+.stayzly-price { margin-top:12px; color:#e6eef6; font-weight:700; }
+
+/* Floating AI button - keep existing id/class support */
+#ai-btn, .ai-floating-btn, .stayzly-ai-btn {
+  position:fixed; right:26px; bottom:26px;
+  background: linear-gradient(90deg, var(--stay-accent), #ab6cff);
+  color:white; padding:14px 18px; border-radius:12px; font-weight:700; cursor:pointer;
+  box-shadow:0 10px 30px rgba(123,92,255,0.16); border: 1px solid rgba(255,255,255,0.06); z-index:1000;
+}
+
+/* footer improvement: center content and darken it */
+.stayzly-footer {
+  background:transparent;
+  border-top:1px solid rgba(255,255,255,0.02);
+  color: var(--stay-muted);
+  padding: 18px 0;
+  text-align:center;
+}
+
+/* small screens */
+@media (max-width: 720px) {
+  .stayzly-hero h2 { font-size:28px; }
+  .stayzly-card .card-img-top { height:150px; }
+  .stayzly-nav-right { display:none; }
+  .stayzly-brand { justify-content:center; }
+}
+
+/* Utility small fix to ensure form inputs look right on the dark background */
+.stayzly-dark-input, .form-control.stayzly {
+  background-color: #0F1A3A !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Tax toggle box style (if present) */
+.tax-toggle-box {
+  padding:10px 14px;
+  border-radius:12px;
+  background: rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.03);
+  color: var(--stay-muted);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+/* MODERN FOOTER */
+.stayzly-footer {
+  margin-top: 60px;
+  width: 100%;
+  padding: 28px 0 40px;
+  text-align: center;
+  background: transparent;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.stayzly-footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.stayzly-footer-socials a {
+  color: #a5b4fc; /* soft purple tone */
+  font-size: 1.4rem;
+  margin: 0 8px;
+  transition: 0.25s ease;
+}
+
+.stayzly-footer-socials a:hover {
+  color: #c7d2fe;
+  transform: translateY(-3px);
+}
+
+.stayzly-footer-brand {
+  color: #dbe4ff;
+  font-size: 14.5px;
+  opacity: 0.85;
+}
+
+.stayzly-footer-links {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.stayzly-footer-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.stayzly-footer-links a:hover {
+  color: #cbd5e1;
+}
+
+.stayzly-footer-links span {
+  color: #6b7280;
+}
+/* --- AI ITINERARY BUTTON (Figma-like outlined style) --- */
+
+/* Main pill */
+.ai-floating-btn,
+#ai-btn,
+.stayzly-ai-btn {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 1100;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+
+  font-weight: 700;
+  font-size: 15px;
+  color: #e8eef8;
+  cursor: pointer;
+
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 2px solid transparent; /* needed for border-box trick */
+
+  /* DOUBLE background trick: first (padding-box) is dark panel,
+     second (border-box) creates gradient border */
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),  /* inner panel */
+    linear-gradient(90deg, #7b5cff 0%, #ab6cff 40%, #4f46e5 100%);            /* border gradient */
+
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  box-shadow: 0 8px 26px rgba(15, 20, 40, 0.55);
+  transition: transform .15s ease, box-shadow .18s ease, filter .12s ease;
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+/* inner dark look: make the inner area slightly darker for contrast */
+.ai-floating-btn::after,
+#ai-btn::after {
+  /* nothing required, kept for extendability */
+  content: "";
+}
+
+/* Icon styling (left) */
+.ai-floating-btn .ai-icon,
+#ai-btn .ai-icon {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  font-size: 16px;
+}
+
+/* Slightly dim the text to match the target */
+.ai-floating-btn span { color: #edf2ff; }
+
+/* Hover / active */
+.ai-floating-btn:hover,
+#ai-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(80, 60, 160, 0.18), 0 8px 30px rgba(2,6,23,0.6);
+  filter: saturate(1.05);
+}
+
+/* Focus accessibility */
+.ai-floating-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(124,90,255,0.12);
+}
+
+/* Small screens — reposition slightly inside edge and reduce size */
+@media (max-width: 480px) {
+  .ai-floating-btn,
+  #ai-btn {
+    right: 14px;
+    bottom: 14px;
+    padding: 10px 14px;
+    gap: 8px;
+    font-size: 14px;
+  }
+  .ai-floating-btn .ai-icon { width: 26px; height: 26px; min-width:26px; font-size:14px; border-radius:7px; }
+}
+/* -------------------------
+   REVIEW CARD (Figma-like)
+   ------------------------- */
+.review-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 22px rgba(2,6,23,0.45);
+  color: #eaf3ff;
+}
+
+/* Author header */
+.review-card .review-head {
+  display:flex;
+  align-items:center;
+  gap:14px;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+/* avatar circle */
+.review-card .review-avatar {
+  width:48px;
+  height:48px;
+  min-width:48px;
+  border-radius:50%;
+  background: linear-gradient(90deg, var(--stay-accent), #ff8ab2);
+  color: white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:16px;
+  box-shadow: inset 0 2px 6px rgba(255,255,255,0.04);
+}
+
+/* username and meta */
+.review-card .review-meta {
+  display:flex;
+  flex-direction:column;
+}
+.review-card .review-meta .name {
+  font-weight:700;
+  color:#f8fbff;
+}
+.review-card .review-meta .date {
+  font-size:13px;
+  color:var(--stay-muted);
+}
+
+/* rating block (right side) */
+.review-card .review-stars {
+  color:#ffd84d;
+  font-weight:700;
+  font-size:16px;
+  display:flex;
+  gap:4px;
+  align-items:center;
+}
+
+/* review content */
+.review-card .review-body {
+  color: var(--stay-muted);
+  line-height:1.6;
+  margin-top:12px;
+  margin-bottom:12px;
+  font-size:15px;
+}
+
+/* divider + actions */
+.review-card .review-footer {
+  border-top: 1px solid rgba(255,255,255,0.03);
+  padding-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:12px;
+  color:var(--stay-muted);
+  font-size:14px;
+}
+
+/* Helpful button small */
+.review-card .btn-helpful {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--stay-muted);
+  padding:6px 10px;
+  border-radius:8px;
+}
+
+/* Delete button kept small & consistent */
+.review-card .btn-delete {
+  background:#222;
+  color:white;
+  border-radius:6px;
+  padding:6px 10px;
+  border:none;
+}
+
+/* small screens */
+@media (max-width:768px){
+  .review-card .review-head { flex-direction:row; gap:10px; }
+  .review-card .review-avatar { width:44px; height:44px; min-width:44px; }
+}
+/* ============================
+   Review form & review cards
+   ============================ */
+
+/* Leave a Review panel */
+.leave-review-section {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.55);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Review form heading */
+.leave-review-section h4 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Star rating area (uses your starability inputs) */
+.starability-slot {
+  --star-size: 28px;
+  --star-gap: 6px;
+  display: block;
+}
+
+/* make radio labels (stars) larger and spaced */
+.starability-slot label {
+  font-size: var(--star-size);
+  color: rgba(255,255,255,0.85);
+  margin-right: var(--star-gap);
+  cursor: pointer;
+}
+
+/* darken the no-rate input text so it's hidden visually */
+.starability-slot .input-no-rate { display:none; }
+
+/* text legend */
+.starability-slot legend { color: var(--stay-muted); margin-bottom: 8px; }
+
+/* textarea styling */
+.leave-review-section .form-control {
+  background: #0F1A2F;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #e6eef6;
+  min-height: 120px;
+  border-radius: 8px;
+  padding: 12px;
+  resize: vertical;
+}
+
+/* submit button */
+.leave-review-section .btn {
+  background: linear-gradient(90deg,var(--stay-accent), #ab6cff);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* All Reviews container */
+.all-reviews-section h4 {
+  margin-bottom: 12px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Individual review card */
+.review-card {
+  border-radius: 12px;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 20px rgba(2,6,23,0.45);
+}
+
+/* Review header layout */
+.review-card .card-body {
+  padding: 0;
+}
+.review-card .d-flex {
+  gap: 12px;
+  align-items: flex-start;
+}
+
+/* Avatar circle */
+.review-card .avatar {
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background: linear-gradient(90deg,var(--stay-accent), #ff8ab2);
+  color:white;
+  font-weight:700;
+  margin-right: 12px;
+  flex-shrink:0;
+}
+
+/* reviewer name & date */
+.review-card .card-title {
+  margin: 0;
+  font-weight:700;
+  color: #fff;
+}
+.review-card .card-title + .small {
+  display:block;
+  color: var(--stay-muted);
+  margin-top:4px;
+  font-size: 13px;
+}
+
+/* stars on the right */
+.review-card .stars {
+  color: #ffd84d;
+  font-size: 16px;
+  font-weight:700;
+}
+
+/* review body */
+.review-card p.card-text {
+  color: var(--stay-muted);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* helpful line / actions */
+.review-card .review-actions {
+  margin-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  padding-top: 12px;
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  color: var(--stay-muted);
+}
+
+/* Delete button (keeps same classes but prettier) */
+.review-card form .btn {
+  background:#0f172a;
+  color:white;
+  border-radius: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .review-card .avatar { width:42px; height:42px; font-size:15px; }
+  .starability-slot label { font-size: 22px; }
+}
+
+/* helper: convert your earlier .starability-result output (stars) to styled inline block */
+.starability-result { display:inline-block; color:#ffd84d; font-weight:700; }
+/* --- FIX: Listing Cards to match reference screenshot --- */
+
+.stayzly-list-grid article.stayzly-card {
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+.stayzly-list-grid .stayzly-media {
+    height: 250px !important;        /* matches your screenshot height */
+    object-fit: cover !important;
+    border-radius: 0 !important; 
+}
+
+.stayzly-list-grid .card-body {
+    padding: 16px 18px !important;
+}
+
+.stayzly-list-grid h5 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.stayzly-list-grid .stayzly-meta {
+    margin-top: 6px !important;
+    color: var(--stay-muted) !important;
+}
+
+.stayzly-list-grid .stayzly-price {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #eaf3ff;
+}
+.stayzly-list-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+}
+/* location row */
+.stayzly-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--stay-muted);
+}
+
+/* guests / bedrooms / bathrooms row */
+.stayzly-info-row {
+    margin-top: 8px;
+    display: flex;
+    gap: 18px;
+    color: var(--stay-muted);
+    font-size: 14px;
+}
+
+/* price + review count (split left/right) */
+.stayzly-price-row {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stayzly-review-count {
+    color: var(--stay-muted);
+    font-size: 14px;
+}
+.stayzly-info-row {
+  display: flex;
+  gap: 18px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--stay-muted);
+  align-items: center;
+}
+
+.stayzly-info-row i {
+  color: #e8ecf7;      /* clean white icons */
+  font-size: 16px;
+  margin-right: 6px;
+}
+/* -------- CREATE LISTING FORM -------- */
+
+.stayzly-form-wrapper {
+  max-width: 750px;
+  margin: 40px auto;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+
+.stayzly-form-title {
+  color: #ff5a7a;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.stayzly-input-group {
+  margin-bottom: 18px;
+}
+
+.stayzly-label {
+  color: #9aa6b2;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.stayzly-input,
+.stayzly-textarea {
+  background: #0F1A3A !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  border-radius: 10px !important;
+  padding: 12px !important;
+}
+
+.stayzly-input:focus,
+.stayzly-textarea:focus {
+  border-color: #7b5cff !important;
+  box-shadow: 0 0 0 3px rgba(123,92,255,0.25) !important;
+}
+
+.stayzly-submit {
+  background: linear-gradient(90deg, #7b5cff, #ab6cff);
+  border: none;
+  padding: 12px 40px;
+  color: white;
+  font-weight: 700;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(123,92,255,0.25);
+  transition: 0.2s;
+}
+
+.stayzly-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 35px rgba(123,92,255,0.35);
+}
+
+.stayzly-form-heading {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    background: linear-gradient(90deg, #ff8ab2, #ab6cff);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 25px;
+}
+/* ===== About page styles (append to your main CSS) ===== */
+
+.about-hero {
+  background-image: url('/images/about-hero.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 110px 0 80px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.about-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(3,6,12,0.45), rgba(3,6,12,0.75));
+  z-index: -1;
+}
+
+.about-hero-inner h1 {
+  font-size: 64px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: #fff;
+}
+
+.about-sub {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 20px;
+  color: rgba(255,255,255,0.85);
+}
+
+/* stats row */
+.about-stats {
+  background: #071022;
+  padding: 36px 0;
+  color: rgba(255,255,255,0.85);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  text-align: center;
+  align-items: center;
+}
+.stat-num {
+  color: #4aa3ff;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.stat-label {
+  color: rgba(255,255,255,0.6);
+}
+
+/* story section */
+.about-story {
+  padding: 56px 0;
+  background: linear-gradient(180deg, rgba(3,6,12,1), rgba(3,6,12,1));
+}
+.about-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 460px;
+  gap: 40px;
+  align-items: center;
+}
+.story-text h3 { color: #fff; margin-bottom: 18px; font-size: 22px; }
+.story-text p { color: rgba(255,255,255,0.7); line-height: 1.75; margin-bottom: 12px; }
+.story-image img { width: 100%; border-radius: 14px; box-shadow: 0 8px 30px rgba(3,8,15,0.6); }
+
+/* values section */
+.about-values { padding: 56px 0; background: transparent; color: #fff; }
+.values-header { text-align: center; margin-bottom: 34px; }
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.value-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 28px;
+  border-radius: 12px;
+  text-align: center;
+  min-height: 180px;
+}
+.value-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 20px;
+}
+.value-card h4 { color: #fff; margin-bottom: 8px; font-size: 16px; }
+.value-card p { color: rgba(255,255,255,0.6); margin: 0; font-size: 14px; line-height: 1.5; }
+
+/* responsiveness */
+@media (max-width: 992px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .about-story-grid { grid-template-columns: 1fr; }
+  .story-image { order: -1; } /* image first on mobile */
+  .values-grid { grid-template-columns: repeat(2,1fr); }
+  .about-hero-inner h1 { font-size: 44px; }
+}
+@media (max-width: 576px) {
+  .stats-grid { grid-template-columns: 1fr; text-align:left; }
+  .about-hero-inner h1 { font-size: 36px; }
+  .values-grid { grid-template-columns: 1fr; }
+}
+/* ABOUT HERO — replace filename with your actual file in public/images */
+.about-hero {
+  background-image: url('/images/islandtop.jpg'); /* <- update filename */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 110px 0 80px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  min-height: 360px; /* ensures visible area on smaller screens */
+}
+
+/* subtle dark overlay so white text stays readable */
+.about-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(3,6,12,0.45), rgba(3,6,12,0.75));
+  z-index: -1;
+}
+/* Remove circular border from theme button */
+#theme-toggle.btn-outline-secondary {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Remove hover border/background */
+#theme-toggle.btn-outline-secondary:hover {
+  border: none !important;
+  background: transparent !important;
+}
+#theme-toggle {
+  padding: 4px;
+  border-radius: 8px;
+  background: transparent;
+}
+
+#theme-icon {
+  font-size: 19px; /* adjust if you want bigger sun */
+}
+/* ---------- page reset (if not already present) ---------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; /* prevents tiny horizontal scroll */
+}
+*, *::before, *::after { box-sizing: inherit; }
+
+/* ---------- full-width hero override (works even if inside a .container) ---------- */
+.about-hero {
+  /* make hero span full viewport width regardless of parent container */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;                 /* full viewport width */
+  min-height: 60vh;             /* adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;           /* vertical spacing; small side padding for mobile */
+  background-image: url('/images/islandtop.jpg'); /* use your hero image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+  z-index: 1;
+}
+
+/* subtle overlay so white text stays readable */
+.about-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  pointer-events: none;
+  z-index: 0;
+}
+.about-hero .about-hero-inner {
+  position: relative; /* above overlay */
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+/* hero heading + subtitle */
+.about-hero h1 {
+  font-size: 4rem;             /* adjust for desired size */
+  line-height: 1.05;
+  margin: 0 0 12px 0;
+}
+@media (max-width: 768px) {
+  .about-hero h1 { font-size: 2rem; }
+  .about-hero { padding: 56px 12px; min-height: 40vh; }
+}
+
+/* ---------- keep stats section centered while hero bg is full width ---------- */
+.about-stats .container {
+  max-width: 1200px; /* standard centered width */
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* grid for stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+  padding: 36px 0;
+}
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+}
+.stat-num {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #1e90ff; /* adjust */
+}
+
+/* ---------- minor fix: prevent the image in story section from overflowing ---------- */
+.about-story .story-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+/* ----- Transparent / Glassmorphism Card for Story Section ----- */
+
+.about-story {
+  padding: 60px 0;
+}
+
+.about-story .about-story-grid {
+  background: rgba(255, 255, 255, 0.04); /* faint white tint */
+  backdrop-filter: blur(10px);           /* glass blur */
+  -webkit-backdrop-filter: blur(10px);   /* Safari support */
+  border-radius: 18px;
+  padding: 40px 50px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Keep layout responsive */
+.about-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.story-text h3 {
+  margin-bottom: 18px;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.story-text p {
+  line-height: 1.6;
+  color: #d8d8d8;
+}
+
+.story-image img {
+  width: 100%;
+  border-radius: 14px;
+}
+/* Fully centered footer layout */
+.center-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  text-align: center;
+  gap: 18px;
+}
+
+/* Brand centered */
+.footer-brand.centered {
+  text-align: center;
+}
+
+/* Center icons row */
+.center-icons {
+  justify-content: center !important;
+  display: flex;
+  gap: 14px;
+}
+
+/* Center copyright row */
+.copy-row.centered {
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+}
+
+/* Reduce width restrictions so content centers perfectly */
+.site-footer .container-like {
+  max-width: 100%;
+}
+/* --- Make icons visible --- */
+.site-footer .social-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #ffffff !important;
+}
+
+/* --- Top spacing for footer --- */
+.site-footer {
+  padding-top: 60px !important;
+}
+
+/* --- Center icon row with proper spacing --- */
+.center-icons {
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+  gap: 18px !important;
+  margin-top: 22px;
+  margin-bottom: 12px;
+}
+/* ------------------ Polished brand-circle social icons ------------------ */
+.site-footer .social-row { gap: 18px; }
+
+/* base */
+.social-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  text-decoration: none;
+  color: #fff;
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: visible;
+  border: none;
+}
+
+/* make icon inside crisp white */
+.social-btn svg { width: 20px; height: 20px; display: block; fill: #fff !important; }
+
+/* subtle outer glow / drop shadow common to all */
+.social-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  filter: blur(12px);
+  opacity: 0.35;
+  z-index: -2;
+}
+
+/* small inner subtle rim for 3D feel */
+.social-btn::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.02);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* hover/press */
+.social-btn:hover { transform: translateY(-6px) scale(1.03); }
+.social-btn:active { transform: translateY(-2px) scale(.99); }
+
+/* --- Brand backgrounds --- */
+/* Instagram gradient (radial blend) */
+.social-btn.icon-instagram {
+  background: radial-gradient(circle at 30% 30%, #feda75 0%, #f58529 18%, #dd2a7b 45%, #8134af 72%, #515bd4 100%);
+  box-shadow: 0 10px 30px rgba(81,91,212,0.18);
+}
+.social-btn.icon-instagram::before { background: rgba(81,91,212,0.12); }
+
+/* Twitter: black circle (like your ref) */
+.social-btn.icon-twitter {
+  background: linear-gradient(180deg, #111111, #0c0c0c);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.social-btn.icon-twitter::before { background: rgba(0,0,0,0.28); }
+
+/* Facebook: classic blue */
+.social-btn.icon-facebook {
+  background: linear-gradient(180deg, #2d86ff, #1a62d8);
+  box-shadow: 0 10px 30px rgba(45,134,255,0.12);
+}
+.social-btn.icon-facebook::before { background: rgba(45,134,255,0.12); }
+
+/* LinkedIn: deep teal/blue */
+.social-btn.icon-linkedin {
+  background: linear-gradient(180deg, #0e8ad1, #006097);
+  box-shadow: 0 10px 30px rgba(14,138,209,0.12);
+}
+.social-btn.icon-linkedin::before { background: rgba(14,138,209,0.12); }
+
+/* WhatsApp (if you re-add later) */
+.social-btn.icon-whatsapp {
+  background: linear-gradient(180deg, #25D366, #128C7E);
+  box-shadow: 0 10px 30px rgba(37,211,102,0.12);
+}
+.social-btn.icon-whatsapp::before { background: rgba(37,211,102,0.12); }
+
+/* Slight size variant for small contexts (use .sm) */
+.social-btn.sm { width: 42px; height: 42px; }
+.login-submit-btn {
+    width: 90%;
+    margin: 22px auto 10px;
+    display: block;
+
+    background: linear-gradient(135deg, #3a3f9f, #74456e); /* SAME AS JOIN */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    color: white;
+    font-weight: 600;
+    padding: 14px 0;
+    border-radius: 40px;
+
+    transition: 0.25s ease-in-out;
+    box-shadow: 0 0 15px rgba(118, 74, 255, 0.18);
+}
+
+.login-submit-btn:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+/* =========================
+   Theme compatibility layer
+   Place this block LAST in figma-style.css
+   ========================= */
+
+/* ---------- LIGHT MODE (default) ---------- */
+body:not(.dark-mode),
+html:not(.dark-mode) body {
+  background: #ffffff !important;
+  color: #222222 !important;
+}
+
+/* navbar (force light look when NOT dark) */
+body:not(.dark-mode) .navbar,
+body:not(.dark-mode) nav.navbar {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-bottom: 1px solid rgba(34,34,34,0.06) !important;
+}
+body:not(.dark-mode) .navbar .nav-link,
+body:not(.dark-mode) .navbar a,
+body:not(.dark-mode) .nav-link {
+  color: #222222 !important;
+}
+
+/* cards & listing (light) */
+body:not(.dark-mode) .listing-card,
+body:not(.dark-mode) .stayzly-card,
+body:not(.dark-mode) .card.stayzly {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-color: rgba(0,0,0,0.06) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06) !important;
+}
+
+/* footer (light) */
+body:not(.dark-mode) .f-info,
+body:not(.dark-mode) .stayzly-footer {
+  background-color: #ebebeb !important;
+  color: #222222 !important;
+}
+body:not(.dark-mode) .f-info a,
+body:not(.dark-mode) .stayzly-footer a {
+  color: #222222 !important;
+}
+
+/* form controls light */
+body:not(.dark-mode) .form-control,
+body:not(.dark-mode) input,
+body:not(.dark-mode) textarea {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-color: rgba(34,34,34,0.08) !important;
+}
+
+/* AI button (light) */
+body:not(.dark-mode) .ai-floating-btn,
+body:not(.dark-mode) #ai-btn {
+  background: linear-gradient(90deg,#8a2be2,#4f46e5) !important;
+  color: #fff !important;
+}
+
+/* flash/toast (light) */
+body:not(.dark-mode) .flash-msg {
+  background: linear-gradient(180deg,#fff,#f7f8fb) !important;
+  color: #0b1220 !important;
+  border: 1px solid rgba(11,17,32,0.06) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06) !important;
+}
+
+/* ---------- DARK MODE (applies when body has .dark-mode) ---------- */
+body.dark-mode,
+html.dark-mode body {
+  background: linear-gradient(180deg, var(--stay-bg, #071121) 0%, #071422 100%) !important;
+  color: #e6eef6 !important;
+}
+
+/* navbar dark */
+body.dark-mode .navbar,
+body.dark-mode nav.navbar {
+  background-color: #0F172A !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(255,255,255,0.03) !important;
+}
+body.dark-mode .navbar a,
+body.dark-mode .nav-link {
+  color: #ffffff !important;
+}
+
+/* cards dark */
+body.dark-mode .listing-card,
+body.dark-mode .stayzly-card,
+body.dark-mode .card.stayzly {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)) !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+  color: #eaf3ff !important;
+}
+
+/* footer dark */
+body.dark-mode .f-info,
+body.dark-mode .stayzly-footer {
+  background-color: #0F172A !important;
+  color: #A5B4FC !important;
+}
+
+/* forms dark */
+body.dark-mode .form-control,
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #0F1A3A !important;
+  color: #ffffff !important;
+  border-color: #334155 !important;
+}
+
+/* AI button dark */
+body.dark-mode .ai-floating-btn,
+body.dark-mode #ai-btn {
+  background-color: #A855F7 !important;
+  color: #fff !important;
+}
+
+/* flash/toast dark */
+body.dark-mode .flash-msg {
+  background: rgba(255,255,255,0.03) !important;
+  color: #eaf6ff !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: 0 12px 30px rgba(3,8,15,0.45) !important;
+}
+
+/* Force override for inline nav background if present (rare) */
+body:not(.dark-mode) nav[style] { background-color: #ffffff !important; }
+body.dark-mode nav[style] { background-color: #0F172A !important; }
+
+/* Make sure theme toggle is clickable and visible */
+#theme-toggle { z-index: 2000 !important; position: relative !important; }
+
+/* ------- overrides for small inline color pieces (e.g. "/ night" span) ------- */
+body.dark-mode .stayzly-price span,
+html.dark-mode body .stayzly-price span {
+  color: rgba(230, 240, 255, 0.78) !important; /* light for dark */
+}
+body:not(.dark-mode) .stayzly-price span,
+html:not(.dark-mode) body .stayzly-price span {
+  color: #9aa6b2 !important; /* muted for light */
+}
+body.dark-mode .stayzly-meta,
+body.dark-mode .stayzly-info-row,
+body.dark-mode .stayzly-review-count {
+  color: var(--stay-muted, #9aa6b2) !important;
+}
+body:not(.dark-mode) .stayzly-meta,
+body:not(.dark-mode) .stayzly-info-row,
+body:not(.dark-mode) .stayzly-review-count {
+  color: #6b7280 !important;
+}
+body.dark-mode .stayzly-info-row i { color: #e8ecf7 !important; } 
+body:not(.dark-mode) .stayzly-info-row i { color: #222222 !important; }
+
+/* keep this block last for maximum override effect */
+/* --- Premium Glassy AI Itinerary Button (matches Submit style) --- */
+
+.ai-floating-btn,
+#ai-btn,
+.stayzly-ai-btn {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 1100;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 190px;                     /* same shape as submit button */
+  padding: 14px 0;
+  border-radius: 40px;              /* pill */
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #3a3f9f, #74456e);  /* SAME gradient as Submit */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  box-shadow: 0 0 18px rgba(118, 74, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition: 0.25s ease-in-out;
+}
+
+/* Icon box */
+.ai-floating-btn i,
+#ai-btn i {
+  font-size: 18px;
+  color: white;
+}
+
+/* Hover */
+.ai-floating-btn:hover,
+#ai-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(118, 74, 255, 0.32);
+}
+
+/* For mobile */
+@media (max-width: 480px) {
+  .ai-floating-btn,
+  #ai-btn {
+    right: 14px;
+    bottom: 14px;
+    width: 160px;
+    padding: 12px 0;
+    font-size: 14px;
+  }
+}
+/* ---------- LIGHT MODE ENHANCEMENTS (append LAST) ----------
+   Ensure headings/text are readable on white/light backgrounds
+   without changing backend or JS. Paste this at the very end
+   of public/css/figma-style.css
+------------------------------------------------------------ */
+
+body:not(.dark-mode) .stayzly-hero h2,
+html:not(.dark-mode) body .stayzly-hero h2 {
+  color: #111827 !important;            /* strong contrast for hero heading */
+  text-shadow: none !important;
+}
+
+body:not(.dark-mode) .stayzly-hero p,
+html:not(.dark-mode) body .stayzly-hero p {
+  color: #374151 !important;            /* darker subtitle color */
+}
+
+/* Listing card titles / meta / small text in light mode */
+body:not(.dark-mode) .stayzly-list-grid h5,
+html:not(.dark-mode) body .stayzly-list-grid h5,
+body:not(.dark-mode) .stayzly-card h5,
+html:not(.dark-mode) body .stayzly-card h5 {
+  color: #0f1724 !important;            /* darker title color for cards */
+  font-weight: 600;
+}
+
+/* Make the meta rows and small info more visible in light mode */
+body:not(.dark-mode) .stayzly-meta,
+body:not(.dark-mode) .stayzly-info-row,
+body:not(.dark-mode) .stayzly-review-count,
+html:not(.dark-mode) body .stayzly-meta,
+html:not(.dark-mode) body .stayzly-info-row,
+html:not(.dark-mode) body .stayzly-review-count {
+  color: #4b5563 !important;            /* medium dark for meta text */
+}
+
+/* Icon colors inside info row (guests/beds/baths) */
+body:not(.dark-mode) .stayzly-info-row i,
+html:not(.dark-mode) body .stayzly-info-row i {
+  color: #111827 !important;            /* dark icons on white bg */
+}
+
+/* Price styling in light mode: keep it prominent */
+body:not(.dark-mode) .stayzly-price,
+html:not(.dark-mode) body .stayzly-price {
+  color: #0b1220 !important;
+}
+
+/* Hero and listing spacing: ensure visibility if some rules hide contrast */
+body:not(.dark-mode) .stayzly-hero,
+html:not(.dark-mode) body .stayzly-hero {
+  /* make sure background is light and text contrasts */
+  background: transparent !important;
+}
+
+/* Flash / toast - ensure text remains readable in light theme */
+body:not(.dark-mode) .flash-msg,
+html:not(.dark-mode) body .flash-msg {
+  color: #0b1220 !important;
+}
+
+/* If your site uses .container (bootstrap) and compresses hero width,
+   ensure the hero text itself is still readable */
+body:not(.dark-mode) .stayzly-hero h2,
+html:not(.dark-mode) body .stayzly-hero h2 {
+  -webkit-text-fill-color: initial !important;
+}
+/* ==========================================================
+   CUSTOM FILE INPUT — with rounded edges + vertical divider
+   Works for Chrome, Edge, Opera, Firefox, Safari
+   ========================================================== */
+
+.stayzly-input-group input[type="file"].stayzly-input.form-control {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    padding: 6px !important;
+    background: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    height: 46px !important;
+    display: block;
+}
+
+/* -------- Chrome/Edge/Opera ---------- */
+.stayzly-input-group input[type="file"].stayzly-input.form-control::-webkit-file-upload-button {
+    background: var(--input-bg) !important;
+    color: var(--text-primary) !important;
+    padding: 10px 18px !important;
+    border: none !important;
+    border-radius: 10px 0 0 10px !important;
+    margin-right: 10px !important;
+
+    /* VERTICAL DIVIDER */
+    border-right: 1px solid var(--border-color) !important;
+
+    cursor: pointer;
+}
+
+/* -------- Firefox/Safari (Standard) ---------- */
+.stayzly-input-group input[type="file"].stayzly-input.form-control::file-selector-button {
+    background: var(--input-bg) !important;
+    color: var(--text-primary) !important;
+    padding: 10px 18px !important;
+    border: none !important;
+    border-radius: 10px 0 0 10px !important;
+    margin-right: 10px !important;
+
+    /* VERTICAL DIVIDER */
+    border-right: 1px solid var(--border-color) !important;
+
+    cursor: pointer;
+}
+
+/* Improve readability of "No file chosen" text */
+.stayzly-input-group input[type="file"].stayzly-input.form-control {
+    font-size: 0.95rem !important;
+    padding-left: 12px !important;
+}

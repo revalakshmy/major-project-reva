@@ -197,3 +197,165 @@
   -webkit-transition: background-position .7s;
   transition: background-position .7s;
 }
+/* ==== Quick fix for star rating layout & overlapping text ==== */
+/* Add this at end of figma-style.css (non-destructive override) */
+
+.starability-slot {
+  display: block;
+  margin: 0 0 12px 0;
+  padding: 0;
+  clear: both;
+}
+
+.starability-slot legend {
+  display: block;
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--stay-muted);
+  line-height: 1;
+}
+
+/* Position inputs off-screen (keeps accessibility) */
+.starability-slot input[type="radio"],
+.starability-slot .input-no-rate {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Make labels show as star blocks and avoid text overflow */
+.starability-slot label {
+  display: inline-block;
+  vertical-align: middle;
+  width: 36px;
+  height: 36px;
+  margin-right: 6px;
+  text-indent: -9999px; /* hide the text but keep for screen readers */
+  position: relative;
+  cursor: pointer;
+}
+
+/* Use pseudo-element to draw a star glyph (visible) */
+.starability-slot label::before {
+  content: "★";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #cbd5e1; /* muted star color */
+  line-height: 1;
+}
+
+/* Highlight selected star(s) — basic behaviour for the checked star */
+.starability-slot input:checked + label::before,
+.starability-slot label:hover::before {
+  color: #ffd84d; /* gold */
+}
+
+/* Minor safety to prevent labels collapsing on small viewports */
+@media (max-width: 480px) {
+  .starability-slot label { width: 30px; height: 30px; margin-right: 4px; }
+  .starability-slot label::before { font-size: 16px; }
+}
+/* public/css/rating.css - robust star styling (overrides common conflicts) */
+
+.starability-slot {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 8px 0 16px !important;
+  padding: 6px 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  position: relative !important;
+  font-family: inherit !important;
+}
+
+/* hide native radios but keep them accessible */
+.starability-slot input[type="radio"],
+.starability-slot .input-no-rate {
+  position: absolute !important;
+  left: -9999px !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* labels are visual stars — force inline, ensure no wrapping */
+.starability-slot label {
+  display: inline-block !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  user-select: none !important;
+  cursor: pointer !important;
+  color: rgba(255,255,255,0.20) !important;
+  transition: transform 160ms cubic-bezier(.2,.9,.2,1), color 140ms ease !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45) !important;
+  white-space: nowrap !important;
+  padding: 2px !important;
+  position: relative !important;
+}
+
+/* force a star glyph with fallback font stack that supports the symbol */
+.starability-slot label::before {
+  content: "★" !important;
+  font-family: "Segoe UI Symbol", "Noto Color Emoji", "Apple Color Emoji", "Arial Unicode MS", serif !important;
+  display: inline-block !important;
+  transform-origin: 50% 50% !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  color: inherit !important;
+}
+
+/* hide any label text (accessible but visually hidden) */
+.starability-slot label > span {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* hover highlight and neighbor highlight via row-reverse */
+.starability-slot label:hover::before,
+.starability-slot label:hover ~ label::before {
+  transform: scale(1.16) !important;
+  color: #ffd84d !important;
+  text-shadow: 0 8px 26px rgba(255,200,70,0.12) !important;
+}
+
+/* keyboard focus */
+.starability-slot input[type="radio"]:focus + label::before {
+  outline: 3px solid rgba(255,216,77,0.08) !important;
+  outline-offset: 6px !important;
+  border-radius: 6px !important;
+}
+
+/* selected stars coloring — controlled by data-rating attribute set by JS */
+.starability-slot[data-rating="1"] label:nth-of-type(-n+1)::before,
+.starability-slot[data-rating="2"] label:nth-of-type(-n+2)::before,
+.starability-slot[data-rating="3"] label:nth-of-type(-n+3)::before,
+.starability-slot[data-rating="4"] label:nth-of-type(-n+4)::before,
+.starability-slot[data-rating="5"] label:nth-of-type(-n+5)::before {
+  color: #ffd84d !important;
+  transform: scale(1.06) !important;
+  text-shadow: 0 10px 30px rgba(255,200,70,0.14) !important;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45)) !important;
+}
+
+/* mobile tweak */
+@media (max-width: 480px) {
+  .starability-slot label { font-size: 24px !important; }
+}

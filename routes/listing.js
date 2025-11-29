@@ -5,6 +5,8 @@ const ExpressError = require("../utils/Expresserror.js");
 const { listingSchema } = require("../schema.js");
 const { isLoggedIn, isOwner } = require("../middleware.js");
 const listingController = require("../controller/listings.js");
+//const isting = require("../models/listing");
+
 
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
@@ -46,5 +48,6 @@ router.route("/:id")
 
 // EDIT PAGE
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.RenderEditform));
+
 
 module.exports = router;

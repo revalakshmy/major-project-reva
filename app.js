@@ -12,6 +12,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 
+
+
 // const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 
@@ -40,6 +42,10 @@ app.get("/", (req, res) => {
 const listingRouter=require("./routes/listing.js");
 const reviewRouter=require("./routes/review.js");
 const userRouter=require("./routes/user.js");
+
+// ---- ADDED: static routes file require ----
+const staticRoutes = require("./routes/static");
+// -------------------------------------------
 
 const dbUrl=process.env.ATLASDB_URL;
 
@@ -127,13 +133,16 @@ app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 
-
+// ---- ADDED: mount static routes (about etc) ----
+app.use('/', staticRoutes);
+// -----------------------------------------------
 
 
 // Catch-all for 404 Not Found - MUST be after all other routes
 // app.all("*", (req, res, next) => {
 //     next(new ExpressError(404, "Page Not Found!"));
 // });
+
 
 
 
@@ -159,10 +168,8 @@ app.use((err, req, res, next) => {
 
 
 
-
 // --- Start Server ---
 const port = process.env.PORT || 8080; // Use environment variable PORT, or 8080 for local development
 app.listen(port, () => {
    console.log(`Server is listening on port ${port}`);
 });
-

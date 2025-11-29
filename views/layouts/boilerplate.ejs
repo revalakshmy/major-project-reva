@@ -3,28 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust</title>
+    <title>StayZly-Stays,now easy!</title>
     <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/rating.css"/>
+    <link rel="stylesheet" href="/css/figma-style.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+     <!-- flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- optional: flatpickr locale if needed -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/your-locale.js"></script> -->
+<!-- init script for booking inputs -->
+<script src="/js/booking.js"></script>
+
+
+<style>
+  #map {
+    height: 320px !important;
+    width: 100%;
+    border-radius: 12px;
+  }
+</style>
+
+
 </head>
 
 <body>
+
+    <!-- FOR SPLASH SCREEN: -->
+     <!-- SPLASH SCREEN -->
+<% if (typeof showSplash !== "undefined" && showSplash === true) { %>
+<!-- SPLASH SCREEN -->
+<div id="splash-screen" aria-hidden="false">
+  <div class="splash-inner" role="dialog" aria-label="Loading stayzly">
+
+    <!-- LOGO (your PNG or SVG) -->
+    <img src="/images/finallogo.svg" alt="StayZly Logo" class="splash-logo" />
+
+    <h1 class="splash-title">StayZly</h1>
+    <p class="splash-sub">Stays, now easy!</p>
+
+    <!-- Progress -->
+    <div class="splash-progress-container">
+  <div class="splash-progress-wrap">
+    <div class="splash-progress-bar"></div>
+  </div>
+
+  <div class="splash-percent">0%</div>
+</div>
+  </div>
+</div>
+<% } %>
+
+
+
     <%- include("../includes/navbar.ejs") %>
 
-    <div class="container">
+    <div class="container-fluid px-0">
+
         <%- include("../includes/flash.ejs") %>
         <%- body %>
 
         <!-- SHOW AI BUTTON ONLY ON HOME PAGE -->
         <% if (typeof showAI !== "undefined" && showAI === true) { %>
-        <button id="ai-btn" class="ai-floating-btn">
-            🤖 AI Itinerary
+        <button id="ai-btn" class="ai-floating-btn stayzly-ai-btn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>AI Itinerary</span>
         </button>
+
         <% } %>
     </div>
 
@@ -38,7 +90,8 @@
                 <h2>✨ AI-Powered Itinerary Generator</h2>
 
                 <input type="text" id="ai-location" class="ai-input" placeholder="Enter Destination">
-                <input type="number" id="ai-budget" class="ai-input" placeholder="Budget (USD)">
+                <input type="number" id="ai-budget" class="ai-input" placeholder="Budget (INR)">
+
 
                 <label style="font-size:15px;">Travel Dates</label>
                 <input type="date" id="ai-start" class="ai-input">
@@ -87,6 +140,87 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
         <script src="/js/ai.js"></script>
     <% } %>
+
+
+    <!-- JS CODE FOR SPLASH SCREEN ONLY -->
+     <script>
+(function () {
+  const splash = document.getElementById("splash-screen");
+  const bar = document.querySelector(".splash-progress-bar");
+  const percent = document.querySelector(".splash-percent");
+
+  if (!splash || !bar || !percent) return;
+
+  // SETTINGS
+  const STEPS = [0, 12, 27, 45, 63, 78, 90];  // visible jumps
+  const STEP_INTERVAL = 220;                 // ms between jumps
+  const MIN_VISIBLE = 1200;                  // splash must stay minimum this long
+  const FINISH_SPEED = 300;                  // final 90 -> 100 animation
+
+  let started = performance.now();
+  let finishedSteps = false;
+
+  // animate bar to X%
+  const setPercent = (v) => {
+    bar.style.width = v + "%";
+    percent.textContent = v + "%";
+  };
+
+  // step runner
+  let i = 0;
+  function runSteps() {
+    if (i < STEPS.length) {
+      setPercent(STEPS[i]);
+      i++;
+      setTimeout(runSteps, STEP_INTERVAL);
+    } else {
+      finishedSteps = true;
+      maybeFinish();
+    }
+  }
+
+  // try finishing after load + min visible time
+  function maybeFinish() {
+    const elapsed = performance.now() - started;
+    const wait = Math.max(0, MIN_VISIBLE - elapsed);
+
+    setTimeout(() => {
+      bar.style.transition = `width ${FINISH_SPEED}ms ease-out`;
+      setPercent(100);
+
+      setTimeout(() => {
+        splash.classList.add("splash-hidden");
+        setTimeout(() => splash.remove(), 600);
+      }, 350);
+    }, wait);
+  }
+
+  // when page loads, finish if steps done
+  window.addEventListener("load", () => {
+    if (finishedSteps) {
+      maybeFinish();
+    } else {
+      // wait until steps done
+      const t = setInterval(() => {
+        if (finishedSteps) {
+          clearInterval(t);
+          maybeFinish();
+        }
+      }, 70);
+    }
+  });
+
+  // start animation
+  bar.style.transition = `width ${STEP_INTERVAL - 40}ms linear`;
+  runSteps();
+
+})();
+</script>
+
+
+
+  
+
 
 </body>
 </html>
